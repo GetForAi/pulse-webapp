@@ -12,31 +12,31 @@ export async function initAvatarView() {
     appState.steps = steps;
     appState.xp = calculateXP(steps);
     const level = calculateLevel(appState.xp);
-    const completed = steps.filter(s => s.completed).length;
-
     const progressPercent = Math.min(100, (appState.xp % 50) * 2);
-    const avatarSymbol = level >= 5 ? "🧙‍♂️" : level >= 3 ? "🧑‍💼" : "🙂";
 
     const activeTasks = steps.filter(s => !s.completed);
     const completedTasks = steps.filter(s => s.completed);
 
+    const avatarSymbol = level >= 5 ? "🧙‍♂️" : level >= 3 ? "🧑‍💼" : "🙂";
+
     const renderTasks = (list, done = false) =>
       list.map(task => `
         <div class="task-item ${done ? 'done' : ''}">
-          ${task.step_number}. ${task.description}
-          ${!done ? `<button data-step="${task.step_number}">Выполнено</button>` : ""}
-        </div>`
-      ).join("");
+          <div class="task-title">${task.step_number}. ${task.description || 'Неизвестное задание'}</div>
+          ${task.detail ? `<div class="task-desc">${task.detail}</div>` : ''}
+          ${!done ? `<button data-step="${task.step_number}" class="mark-done">Выполнено</button>` : ''}
+        </div>
+      `).join("");
 
     container.innerHTML = `
       <div class="avatar-container">
         <div class="avatar-figure">${avatarSymbol}</div>
-        <div class="stats-panel">
-          <div><strong>Уровень:</strong> ${level}</div>
-          <div><strong>Опыт:</strong> ${appState.xp} XP</div>
-          <div class="progress-bar">
-            <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
-          </div>
+        <div class="level-xp">
+          <div class="level">Уровень ${level}</div>
+          <div class="xp">${appState.xp} XP</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
         </div>
 
         <div class="task-tabs">
@@ -50,7 +50,7 @@ export async function initAvatarView() {
       </div>
     `;
 
-    document.querySelectorAll("button[data-step]").forEach(btn => {
+    document.querySelectorAll(".mark-done").forEach(btn => {
       btn.addEventListener("click", async () => {
         const stepNumber = Number(btn.dataset.step);
         await fetch("https://prizegift.space/update_step", {
@@ -73,7 +73,6 @@ export async function initAvatarView() {
       document.getElementById("tab-active").classList.remove("active");
       document.getElementById("task-list").innerHTML = renderTasks(completedTasks, true);
     });
-
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
     console.error("Ошибка avatarView:", err);
