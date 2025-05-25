@@ -1,5 +1,5 @@
 import { appState } from "../state.js";
-import { calculateXP, calculateLevel } from "../utils.js";
+import { calculateXP, calculateLevel, calculateXPProgress } from "../utils.js";
 
 export async function initMainView() {
   const container = document.getElementById("content");
@@ -38,12 +38,20 @@ export async function initMainView() {
     appState.xp = calculateXP(progress);
 
     const level = calculateLevel(appState.xp);
+    const xpCurrent = calculateXPProgress(appState.xp);
+    const progressPercent = Math.min((xpCurrent / 100) * 100, 100);
 
     container.innerHTML = `
       <h2>Привет, ${appState.firstName}!</h2>
-      <p>🎓 Уровень: ${level} &nbsp; | &nbsp; 🧠 Опыт: ${appState.xp} XP</p>
+      <div class="level-section">
+        <p>🎓 Уровень: ${level}</p>
+        <p>🧠 Опыт: ${appState.xp} XP</p>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" style="width: ${progressPercent}%"></div>
+        </div>
+      </div>
       <div class="steps">${renderedSteps}</div>
-      <p>📊 ${completedCount}/${steps.length} шагов выполнено</p>
+      <p class="summary">📊 ${completedCount}/${steps.length} шагов выполнено</p>
     `;
 
     document.querySelectorAll("button[data-step]").forEach((btn) => {
@@ -59,7 +67,6 @@ export async function initMainView() {
           }),
         });
 
-        // Перезагрузка view
         initMainView();
       });
     });
@@ -67,4 +74,4 @@ export async function initMainView() {
     container.innerHTML = `<p style="color:red;">❌ Ошибка загрузки шагов</p>`;
     console.error("Ошибка загрузки /get_progress:", err);
   }
-}
+}    
