@@ -102,3 +102,37 @@ h1, h2 {
   font-weight: 600;
   border-top: 2px solid var(--accent);
 }
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #f0f4fa;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.profile-avatar .avatar-circle {
+  width: 48px;
+  height: 48px;
+  background-color: #4b9eff;
+  color: white;
+  font-weight: 600;
+  font-size: 1.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-info p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+.profile-stats {
+  margin-top: 24px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
