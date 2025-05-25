@@ -7,8 +7,9 @@ export async function initAvatarView() {
 
   try {
     const res = await fetch(`https://prizegift.space/get_progress/${appState.telegramId}`);
-    const steps = await res.json();
+    if (!res.ok) throw new Error("Ошибка ответа сервера");
 
+    const steps = await res.json();
     appState.steps = steps;
     appState.xp = calculateXP(steps);
     const level = calculateLevel(appState.xp);
@@ -50,6 +51,7 @@ export async function initAvatarView() {
       </div>
     `;
 
+    // Обработчики кнопок "Выполнено"
     document.querySelectorAll(".mark-done").forEach(btn => {
       btn.addEventListener("click", async () => {
         const stepNumber = Number(btn.dataset.step);
@@ -62,17 +64,23 @@ export async function initAvatarView() {
       });
     });
 
-    document.getElementById("tab-active").addEventListener("click", () => {
-      document.getElementById("tab-active").classList.add("active");
-      document.getElementById("tab-completed").classList.remove("active");
-      document.getElementById("task-list").innerHTML = renderTasks(activeTasks);
+    // Переключение табов
+    const activeTab = document.getElementById("tab-active");
+    const completedTab = document.getElementById("tab-completed");
+    const taskList = document.getElementById("task-list");
+
+    activeTab.addEventListener("click", () => {
+      activeTab.classList.add("active");
+      completedTab.classList.remove("active");
+      taskList.innerHTML = renderTasks(activeTasks);
     });
 
-    document.getElementById("tab-completed").addEventListener("click", () => {
-      document.getElementById("tab-completed").classList.add("active");
-      document.getElementById("tab-active").classList.remove("active");
-      document.getElementById("task-list").innerHTML = renderTasks(completedTasks, true);
+    completedTab.addEventListener("click", () => {
+      completedTab.classList.add("active");
+      activeTab.classList.remove("active");
+      taskList.innerHTML = renderTasks(completedTasks, true);
     });
+
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
     console.error("Ошибка avatarView:", err);
