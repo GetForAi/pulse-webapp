@@ -1,6 +1,6 @@
 import { initMainView } from './views/mainView.js';
 import { initProfileView } from './views/profileView.js';
-import { initRewardsView } from './views/rewardsView.js'; // ✅ добавлено
+import { initRewardsView } from './views/rewardsView.js';
 import { appState } from './state.js';
 
 function renderContent(html) {
@@ -12,30 +12,34 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = telegram.initDataUnsafe?.user;
 
   if (!user?.id) {
-    renderContent("<p>Ошибка Telegram авторизации</p>");
+    renderContent("<p style='color:red;'>Ошибка Telegram авторизации</p>");
     return;
   }
 
-  // Сохраняем данные пользователя
   appState.telegramId = String(user.id);
   appState.firstName = user.first_name || "";
   appState.username = user.username || "";
 
-  // Загружаем прогресс с сервера и сохраняем шаги в глобальное состояние
+  // Загружаем шаги
   try {
     const res = await fetch(`https://prizegift.space/get_progress/${appState.telegramId}`);
+    if (!res.ok) throw new Error("Ошибка ответа сервера");
+
     const steps = await res.json();
+    if (!Array.isArray(steps)) throw new Error("Неверный формат данных");
+
     appState.steps = steps;
   } catch (error) {
-    console.error("Ошибка загрузки прогресса:", error);
-    appState.steps = [];
+    console.error("Ошибка загрузки шагов:", error);
+    renderContent("<p style='color:red;'>Ошибка загрузки данных. Попробуйте позже</p>");
+    return;
   }
 
-  // Стартовая вкладка
+  // Рендерим начальную вкладку
   initMainView();
   highlightTab('main');
 
-  // Обработчики вкладок
+  // Обработка вкладок
   document.querySelectorAll("nav button").forEach(btn => {
     btn.addEventListener("click", () => {
       const tab = btn.dataset.tab;
@@ -49,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           initProfileView();
           break;
         case 'rewards':
-          initRewardsView(); // ✅ вызываем награды
+          initRewardsView();
           break;
         default:
           renderContent("<p>Раздел в разработке</p>");
@@ -58,7 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// Подсветка активной вкладки
 function highlightTab(activeTab) {
   document.querySelectorAll("nav button").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.tab === activeTab);
