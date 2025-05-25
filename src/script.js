@@ -1,5 +1,6 @@
 import { initAvatarView } from './views/avatarView.js';
 import { appState } from './state.js';
+import { showModal } from './views/modals.js';
 
 function renderContent(html) {
   document.getElementById("content").innerHTML = html;
@@ -20,14 +21,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // Сохраняем пользователя
   appState.telegramId = String(user.id);
   appState.firstName = user.first_name || "";
   appState.username = user.username || "";
 
   try {
-    await initAvatarView();
+    await initAvatarView(); // Главная вкладка
     highlightTab('main');
 
+    // Навигация по вкладкам
     document.querySelectorAll("nav button").forEach(btn => {
       btn.addEventListener("click", async () => {
         const tab = btn.dataset.tab;
@@ -38,7 +41,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             await initAvatarView();
             break;
           default:
-            renderContent("<p>Раздел в разработке</p>");
+            showModal({
+              title: "⏳ В разработке",
+              message: `Раздел "${tab}" скоро появится`,
+              icon: "🛠"
+            });
         }
       });
     });
