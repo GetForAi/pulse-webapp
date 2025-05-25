@@ -1,5 +1,5 @@
-import { appState } from "../state.js";
-import { calculateXP, calculateLevel } from "../utils.js";
+import { appState } from "./state.js";
+import { calculateXP, calculateLevel } from "./utils.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
