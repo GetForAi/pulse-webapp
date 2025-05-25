@@ -1,9 +1,17 @@
+:root {
+  --bg: #f5f7fa;
+  --text: #1a1a1a;
+  --accent: #4b9eff;
+  --accent-dark: #3a8ee6;
+  --tabbar-active: #e6f0ff;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f5f7fa;
-  color: #1a1a1a;
+  background-color: var(--bg);
+  color: var(--text);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,7 +59,7 @@ h1, h2 {
 }
 
 .step button {
-  background-color: #4b9eff;
+  background-color: var(--accent);
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -62,7 +70,7 @@ h1, h2 {
 }
 
 .step button:hover {
-  background-color: #3a8ee6;
+  background-color: var(--accent-dark);
 }
 
 .tabbar {
@@ -81,9 +89,16 @@ h1, h2 {
   font-size: 1.4rem;
   padding: 8px 0;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s ease-in-out;
+  color: var(--text);
 }
 
 .tabbar button:hover {
-  color: #4b9eff;
+  color: var(--accent);
+}
+
+.tabbar button.active {
+  background-color: var(--tabbar-active);
+  font-weight: 600;
+  border-top: 2px solid var(--accent);
 }
