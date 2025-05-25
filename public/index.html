@@ -4,24 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pulse</title>
-  <link rel="stylesheet" href="/src/style.css" />
+
+  <!-- Шрифты и стили -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+
+  <!-- Favicon (по желанию) -->
+  <link rel="icon" href="/assets/favicon.png" />
 </head>
 <body>
   <div id="app">
-    <main id="content">Загрузка...</main>
+    <!-- Основной контент -->
+    <main id="content" role="main" aria-live="polite">Загрузка...</main>
 
-    <nav class="tabbar">
-      <button type="button" data-tab="main">🧭</button>
-      <button type="button" data-tab="profile">👤</button>
-      <button type="button" data-tab="rewards">🎁</button>
-      <button type="button" data-tab="settings">⚙️</button>
+    <!-- Нижняя навигация -->
+    <nav class="tabbar" aria-label="Навигация по разделам">
+      <button type="button" data-tab="main" aria-label="Главная">🧭</button>
+      <button type="button" data-tab="profile" aria-label="Профиль">👤</button>
+      <button type="button" data-tab="rewards" aria-label="Награды">🎁</button>
+      <button type="button" data-tab="settings" aria-label="Настройки">⚙️</button>
     </nav>
   </div>
 
+  <!-- Telegram SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Основной модуль -->
   <script type="module" src="/src/script.js"></script>
 </body>
 </html>
