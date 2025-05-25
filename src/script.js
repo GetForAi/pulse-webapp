@@ -1,6 +1,7 @@
 import { initMainView } from './views/mainView.js';
 import { initProfileView } from './views/profileView.js';
 import { initRewardsView } from './views/rewardsView.js';
+import { initSettingsView } from './views/settingsView.js';
 import { appState } from './state.js';
 
 function renderContent(html) {
@@ -13,9 +14,20 @@ function highlightTab(activeTab) {
   });
 }
 
+function applyThemeFromStorage() {
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const telegram = window.Telegram.WebApp;
   const user = telegram.initDataUnsafe?.user;
+
+  applyThemeFromStorage(); // ⚙️ применяем тему
 
   if (!user?.id) {
     renderContent("<p style='color:red;'>Ошибка Telegram авторизации</p>");
@@ -35,11 +47,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     appState.steps = steps;
 
-    // Показываем главную вкладку
     initMainView();
     highlightTab('main');
 
-    // Обработчики вкладок
     document.querySelectorAll("nav button").forEach(btn => {
       btn.addEventListener("click", () => {
         const tab = btn.dataset.tab;
@@ -54,6 +64,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             break;
           case 'rewards':
             initRewardsView();
+            break;
+          case 'settings':
+            initSettingsView();
             break;
           default:
             renderContent("<p>Раздел в разработке</p>");
