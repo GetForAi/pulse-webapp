@@ -1,17 +1,8 @@
 import { initAvatarView } from './views/avatarView.js';
-import { initProfileView } from './views/profileView.js';
-import { initRewardsView } from './views/rewardsView.js';
-import { initSettingsView } from './views/settingsView.js';
 import { appState } from './state.js';
 
 function renderContent(html) {
   document.getElementById("content").innerHTML = html;
-}
-
-function highlightTab(activeTab) {
-  document.querySelectorAll("nav button").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.tab === activeTab);
-  });
 }
 
 function applyThemeFromStorage() {
@@ -47,32 +38,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     appState.steps = steps;
 
-    initAvatarView(); // заменили initMainView
-    highlightTab('main');
-
-    document.querySelectorAll("nav button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const tab = btn.dataset.tab;
-        highlightTab(tab);
-
-        switch (tab) {
-          case 'main':
-            initAvatarView();
-            break;
-          case 'profile':
-            initProfileView();
-            break;
-          case 'rewards':
-            initRewardsView();
-            break;
-          case 'settings':
-            initSettingsView();
-            break;
-          default:
-            renderContent("<p>Раздел в разработке</p>");
-        }
-      });
-    });
+    // Показываем только одну основную вкладку — аватар
+    initAvatarView();
 
   } catch (error) {
     console.error("❌ Ошибка загрузки шагов:", error);
