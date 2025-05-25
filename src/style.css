@@ -196,3 +196,65 @@ body {
   from { transform: translateY(10px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
+
+/* ========== MODAL TASK DETAIL ========== */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-box {
+  background-color: #181b25;
+  border-radius: 16px;
+  padding: 24px 20px;
+  max-width: 320px;
+  width: 85%;
+  box-shadow: 0 0 20px rgba(0, 255, 224, 0.2);
+  text-align: center;
+  animation: pop 0.25s ease;
+  color: var(--text);
+}
+
+.modal-box h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.modal-box p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.modal-box .modal-reward {
+  font-weight: 600;
+  color: var(--xp);
+  font-size: 0.95rem;
+}
+
+.modal-close {
+  margin-top: 14px;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.modal-close:hover {
+  background: var(--accent-dark);
+}
+
