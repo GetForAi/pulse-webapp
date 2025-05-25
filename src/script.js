@@ -1,48 +1,80 @@
-import { initAvatarView } from './views/avatarView.js';
-import { appState } from './state.js';
+import { appState } from "../state.js";
+import { calculateXP, calculateLevel } from "../utils.js";
 
-function renderContent(html) {
-  document.getElementById("content").innerHTML = html;
-}
-
-function applyThemeFromStorage() {
-  const saved = localStorage.getItem("theme");
-  if (saved === "dark") {
-    document.body.classList.add("dark");
-  } else {
-    document.body.classList.remove("dark");
-  }
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const telegram = window.Telegram.WebApp;
-  const user = telegram.initDataUnsafe?.user;
-
-  applyThemeFromStorage();
-
-  if (!user?.id) {
-    renderContent("<p style='color:red;'>Ошибка Telegram авторизации</p>");
-    return;
-  }
-
-  appState.telegramId = String(user.id);
-  appState.firstName = user.first_name || "";
-  appState.username = user.username || "";
+export async function initAvatarView() {
+  const container = document.getElementById("content");
+  container.innerHTML = `<p>Загрузка...</p>`;
 
   try {
     const res = await fetch(`https://prizegift.space/get_progress/${appState.telegramId}`);
-    if (!res.ok) throw new Error("Ошибка ответа от сервера");
-
     const steps = await res.json();
-    if (!Array.isArray(steps)) throw new Error("Неверный формат данных");
 
     appState.steps = steps;
+    appState.xp = calculateXP(steps);
+    const level = calculateLevel(appState.xp);
+    const progressPercent = Math.min(100, (appState.xp % 50) * 2);
 
-    // Показываем только одну основную вкладку — аватар
-    initAvatarView();
+    const activeTasks = steps.filter(s => !s.completed);
+    const completedTasks = steps.filter(s => s.completed);
 
-  } catch (error) {
-    console.error("❌ Ошибка загрузки шагов:", error);
-    renderContent("<p style='color:red;'>Ошибка загрузки данных. Попробуйте позже</p>");
+    const avatarSymbol = level >= 5 ? "🧙‍♂️" : level >= 3 ? "🧑‍💼" : "🙂";
+
+    const renderTasks = (list, done = false) =>
+      list.map(task => `
+        <div class="task-item ${done ? 'done' : ''}">
+          <div class="task-title">${task.step_number}. ${task.description || 'Неизвестное задание'}</div>
+          ${task.detail ? `<div class="task-desc">${task.detail}</div>` : ''}
+          ${!done ? `<button data-step="${task.step_number}" class="mark-done">Выполнено</button>` : ''}
+        </div>
+      `).join("");
+
+    container.innerHTML = `
+      <div class="avatar-container">
+        <div class="avatar-figure">${avatarSymbol}</div>
+        <div class="level-xp">
+          <div class="level">Уровень ${level}</div>
+          <div class="xp">${appState.xp} XP</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
+        </div>
+
+        <div class="task-tabs">
+          <button id="tab-active" class="active">Активные</button>
+          <button id="tab-completed">Завершённые</button>
+        </div>
+
+        <div class="task-list" id="task-list">
+          ${renderTasks(activeTasks)}
+        </div>
+      </div>
+    `;
+
+    document.querySelectorAll(".mark-done").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const stepNumber = Number(btn.dataset.step);
+        await fetch("https://prizegift.space/update_step", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ telegram_id: appState.telegramId, step_number: stepNumber })
+        });
+        initAvatarView();
+      });
+    });
+
+    document.getElementById("tab-active").addEventListener("click", () => {
+      document.getElementById("tab-active").classList.add("active");
+      document.getElementById("tab-completed").classList.remove("active");
+      document.getElementById("task-list").innerHTML = renderTasks(activeTasks);
+    });
+
+    document.getElementById("tab-completed").addEventListener("click", () => {
+      document.getElementById("tab-completed").classList.add("active");
+      document.getElementById("tab-active").classList.remove("active");
+      document.getElementById("task-list").innerHTML = renderTasks(completedTasks, true);
+    });
+  } catch (err) {
+    container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
+    console.error("Ошибка avatarView:", err);
   }
-});
+}
