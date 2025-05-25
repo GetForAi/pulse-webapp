@@ -1,12 +1,38 @@
 const serverURL = "https://prizegift.space";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const button = document.getElementById("startBtn");
+document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("progress");
 
-  const telegramId = "demo_user_123"; // пока временно
+  try {
+    // Получаем telegram_id из Telegram WebApp
+    const telegram = window.Telegram.WebApp;
+    const telegramId = telegram.initDataUnsafe?.user?.id;
 
-  async function loadProgress() {
+    if (!telegramId) {
+      container.innerHTML = "<p style='color:red;'>Не удалось получить Telegram ID</p>";
+      return;
+    }
+
+    // Регистрируем пользователя
+    await fetch(`${serverURL}/start_user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ telegram_id: telegramId }),
+    });
+
+    await loadProgress(telegramId);
+  } catch (error) {
+    console.error("Ошибка при инициализации:", error);
+    container.innerHTML = "<p style='color:red;'>Ошибка подключения к серверу</p>";
+  }
+});
+
+async function loadProgress(telegramId) {
+  const container = document.getElementById("progress");
+
+  try {
     const res = await fetch(`${serverURL}/get_progress/${telegramId}`);
     const progress = await res.json();
 
@@ -42,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(div);
     });
 
-    // навесим обработчики на кнопки "Выполнено"
     document.querySelectorAll("button[data-step]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const stepNumber = btn.getAttribute("data-step");
@@ -51,29 +76,16 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ telegram_id: telegramId, step_number: Number(stepNumber) }),
+          body: JSON.stringify({
+            telegram_id: telegramId,
+            step_number: Number(stepNumber),
+          }),
         });
-        loadProgress(); // перерисовать
+        loadProgress(telegramId); // обновим список
       });
     });
+  } catch (error) {
+    console.error("Ошибка при загрузке шагов:", error);
+    container.innerHTML = "<p style='color:red;'>Ошибка загрузки шагов</p>";
   }
-
-  if (button) {
-    button.addEventListener("click", async () => {
-      try {
-        await fetch(`${serverURL}/start_user`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ telegram_id: telegramId }),
-        });
-
-        await loadProgress();
-      } catch (error) {
-        console.error("Ошибка при подключении к серверу:", error);
-        container.innerHTML = "<p style='color:red;'>Ошибка подключения к серверу</p>";
-      }
-    });
-  }
-});
+}
