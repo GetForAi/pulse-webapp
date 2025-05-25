@@ -1,4 +1,4 @@
-import { initMainView } from './views/mainView.js';
+import { initAvatarView } from './views/avatarView.js';
 import { initProfileView } from './views/profileView.js';
 import { initRewardsView } from './views/rewardsView.js';
 import { initSettingsView } from './views/settingsView.js';
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const telegram = window.Telegram.WebApp;
   const user = telegram.initDataUnsafe?.user;
 
-  applyThemeFromStorage(); // ⚙️ применяем тему
+  applyThemeFromStorage();
 
   if (!user?.id) {
     renderContent("<p style='color:red;'>Ошибка Telegram авторизации</p>");
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     appState.steps = steps;
 
-    initMainView();
+    initAvatarView(); // заменили initMainView
     highlightTab('main');
 
     document.querySelectorAll("nav button").forEach(btn => {
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         switch (tab) {
           case 'main':
-            initMainView();
+            initAvatarView();
             break;
           case 'profile':
             initProfileView();
