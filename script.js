@@ -4,9 +4,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("progress");
 
   try {
-    // Получаем telegram_id из Telegram WebApp
     const telegram = window.Telegram.WebApp;
     const telegramId = telegram.initDataUnsafe?.user?.id;
+
+    console.log("🔹 Telegram ID:", telegramId);
 
     if (!telegramId) {
       container.innerHTML = "<p style='color:red;'>Не удалось получить Telegram ID</p>";
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Регистрируем пользователя
-    await fetch(`${serverURL}/start_user`, {
+    const regRes = await fetch(`${serverURL}/start_user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,9 +23,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       body: JSON.stringify({ telegram_id: telegramId }),
     });
 
+    if (!regRes.ok) {
+      throw new Error(`Ошибка регистрации пользователя: ${regRes.status}`);
+    }
+
     await loadProgress(telegramId);
   } catch (error) {
-    console.error("Ошибка при инициализации:", error);
+    console.error("❌ Ошибка при инициализации:", error);
     container.innerHTML = "<p style='color:red;'>Ошибка подключения к серверу</p>";
   }
 });
@@ -35,6 +40,12 @@ async function loadProgress(telegramId) {
   try {
     const res = await fetch(`${serverURL}/get_progress/${telegramId}`);
     const progress = await res.json();
+
+    console.log("🔸 Ответ от /get_progress:", progress);
+
+    if (!Array.isArray(progress)) {
+      throw new Error("Получен некорректный ответ от сервера: ожидался массив шагов");
+    }
 
     const steps = [
       "Создай бота",
@@ -85,7 +96,7 @@ async function loadProgress(telegramId) {
       });
     });
   } catch (error) {
-    console.error("Ошибка при загрузке шагов:", error);
+    console.error("❌ Ошибка при загрузке шагов:", error);
     container.innerHTML = "<p style='color:red;'>Ошибка загрузки шагов</p>";
   }
 }
