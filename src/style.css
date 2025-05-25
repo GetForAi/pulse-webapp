@@ -1,25 +1,18 @@
 :root {
-  --bg: #f5f7fa;
-  --text: #1a1a1a;
-  --accent: #4b9eff;
-  --accent-dark: #3a8ee6;
-  --tabbar-active: #e6f0ff;
+  --bg: #0f111a;
+  --text: #e5e5e5;
+  --accent: #00ffe0;
+  --accent-dark: #00bfa5;
+  --tabbar-active: rgba(0, 255, 224, 0.1);
   --xp: #ff70a6;
-  --level: #00b894;
-}
-
-body.dark {
-  --bg: #121212;
-  --text: #ffffff;
-  --accent: #6ca0ff;
-  --accent-dark: #3c78e6;
-  --tabbar-active: #1f1f1f;
-  --xp: #f27ea9;
-  --level: #00e49c;
+  --level: #00ff9d;
+  --card-bg: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.1);
+  --shadow: 0 4px 12px rgba(0,255,224,0.15);
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--bg);
@@ -38,7 +31,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--bg);
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow);
 }
 
 #content {
@@ -47,32 +40,52 @@ body {
   overflow-y: auto;
 }
 
-h1, h2 {
-  margin: 0 0 16px;
-  font-weight: 800;
-  color: var(--text);
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-p {
+.avatar-figure {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  box-shadow: 0 0 16px var(--accent-dark);
+  margin-bottom: 10px;
+}
+
+.level-xp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.level {
   font-size: 0.95rem;
-  margin: 8px 0;
+  font-weight: 700;
+  color: var(--level);
 }
 
-.level-section {
-  margin: 16px 0;
-}
-
-.level-section p {
-  margin: 6px 0;
+.xp {
+  font-size: 0.9rem;
+  color: var(--xp);
 }
 
 .progress-bar {
-  height: 10px;
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  overflow: hidden;
+  height: 8px;
+  width: 100%;
+  background: #222;
+  border-radius: 6px;
   margin-top: 6px;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
 .progress-bar-fill {
@@ -80,28 +93,6 @@ p {
   background: linear-gradient(90deg, var(--accent), var(--accent-dark));
   width: 0%;
   transition: width 0.4s ease-in-out;
-  border-radius: 5px;
-}
-
-.avatar-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.avatar-figure {
-  font-size: 6rem;
-  margin: 12px 0;
-  animation: pop 0.3s ease;
-  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
-  transition: transform 0.3s ease;
-}
-
-.stats-panel {
-  text-align: center;
-  margin-bottom: 12px;
-  font-weight: 600;
-  font-size: 1rem;
 }
 
 .task-tabs {
@@ -123,7 +114,8 @@ p {
 
 .task-tabs button.active {
   background: var(--accent);
-  color: #fff;
+  color: #000;
+  font-weight: 600;
 }
 
 .task-list {
@@ -132,39 +124,36 @@ p {
 }
 
 .task-item {
-  padding: 12px;
-  background-color: #f0f4fa;
-  border-radius: 8px;
-  margin-bottom: 8px;
+  padding: 14px 16px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.task-item button {
-  background: var(--accent);
-  border: none;
-  color: #fff;
-  border-radius: 6px;
-  padding: 4px 10px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: background 0.2s ease;
-}
-
-.task-item button:hover {
-  background: var(--accent-dark);
-}
-
-body.dark .task-item {
-  background-color: #1e1e1e;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: all 0.25s ease;
+  position: relative;
 }
 
 .task-item.done {
+  opacity: 0.4;
   text-decoration: line-through;
-  opacity: 0.6;
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,255,224,0.15);
+}
+
+.task-title {
+  font-weight: 600;
+}
+
+.task-desc {
+  font-size: 0.85rem;
+  margin-top: 6px;
+  color: #aaa;
 }
 
 .tabbar {
@@ -173,7 +162,7 @@ body.dark .task-item {
   align-items: center;
   height: 56px;
   background: var(--bg);
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--border);
 }
 
 .tabbar button {
