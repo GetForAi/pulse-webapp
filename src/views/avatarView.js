@@ -17,6 +17,16 @@ export async function initAvatarView() {
 
     const activeTasks = steps.filter(s => !s.completed);
     const completedTasks = []; // Временно скрываем завершённые
+    if (activeTasks.length === 0) {
+      activeTasks.push({
+        step_number: 1,
+        description: "Протестировать отображение модального окна",
+        detail: "Нажмите на это задание, чтобы увидеть описание и награду",
+        xp: 15,
+        coins: 10,
+        completed: false
+      });
+    }
 
     const avatarSymbol = level >= 5 ? "🧙‍♂️" : level >= 3 ? "🧑‍💼" : "🙂";
 
