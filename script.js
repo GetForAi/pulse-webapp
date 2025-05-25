@@ -1,4 +1,4 @@
-const serverURL = "http://93.183.82.218:5000"; // твой backend
+const serverURL = "https://prizegift.space"; // теперь через HTTPS
 
 document.addEventListener("DOMContentLoaded", () => {
   const button = document.getElementById("startBtn");
