@@ -136,3 +136,35 @@ h1, h2 {
   font-size: 1rem;
   line-height: 1.5;
 }
+.reward-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.reward-card {
+  background-color: #f0f4fa;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s ease-in-out;
+  opacity: 0.6;
+}
+
+.reward-card.unlocked {
+  background-color: #fffce6;
+  border: 2px solid gold;
+  opacity: 1;
+}
+
+.reward-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.reward-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
