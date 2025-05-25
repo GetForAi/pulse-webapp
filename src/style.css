@@ -90,14 +90,18 @@ p {
 }
 
 .avatar-figure {
-  font-size: 5rem;
+  font-size: 6rem;
   margin: 12px 0;
   animation: pop 0.3s ease;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
+  transition: transform 0.3s ease;
 }
 
 .stats-panel {
   text-align: center;
   margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .task-tabs {
@@ -134,6 +138,24 @@ p {
   margin-bottom: 8px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-item button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+
+.task-item button:hover {
+  background: var(--accent-dark);
 }
 
 body.dark .task-item {
@@ -145,7 +167,43 @@ body.dark .task-item {
   opacity: 0.6;
 }
 
+.tabbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 56px;
+  background: var(--bg);
+  border-top: 1px solid #ddd;
+}
+
+.tabbar button {
+  flex: 1;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: var(--text);
+}
+
+.tabbar button:hover {
+  color: var(--accent);
+}
+
+.tabbar button.active {
+  background-color: var(--tabbar-active);
+  font-weight: 600;
+  border-top: 2px solid var(--accent);
+  color: var(--accent);
+}
+
 @keyframes pop {
   from { transform: scale(0.9); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
 }
