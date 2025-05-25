@@ -16,16 +16,14 @@ export async function initAvatarView() {
     const progressPercent = Math.min(100, (appState.xp % 50) * 2);
 
     const activeTasks = steps.filter(s => !s.completed);
-    const completedTasks = steps.filter(s => s.completed);
+    const completedTasks = []; // Временно скрываем завершённые
 
     const avatarSymbol = level >= 5 ? "🧙‍♂️" : level >= 3 ? "🧑‍💼" : "🙂";
 
     const renderTasks = (list, done = false) =>
       list.map(task => `
-        <div class="task-item ${done ? 'done' : ''}">
+        <div class="task-item ${done ? 'done' : ''}" data-task='${JSON.stringify(task)}'>
           <div class="task-title">${task.step_number}. ${task.description || 'Неизвестное задание'}</div>
-          ${task.detail ? `<div class="task-desc">${task.detail}</div>` : ''}
-          ${!done ? `<button data-step="${task.step_number}" class="mark-done">Выполнено</button>` : ''}
         </div>
       `).join("");
 
@@ -42,43 +40,36 @@ export async function initAvatarView() {
 
         <div class="task-tabs">
           <button id="tab-active" class="active">Активные</button>
-          <button id="tab-completed">Завершённые</button>
+          <button id="tab-completed" disabled style="opacity:0.4">Завершённые</button>
         </div>
 
         <div class="task-list" id="task-list">
           ${renderTasks(activeTasks)}
         </div>
       </div>
+      <div class="modal-overlay" id="task-modal" style="display:none;">
+        <div class="modal-box">
+          <h3 id="modal-title">Задание</h3>
+          <p id="modal-desc"></p>
+          <p id="modal-reward" class="modal-reward"></p>
+          <button class="modal-close" id="close-modal">Закрыть</button>
+        </div>
+      </div>
     `;
 
-    // Обработчики кнопок "Выполнено"
-    document.querySelectorAll(".mark-done").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const stepNumber = Number(btn.dataset.step);
-        await fetch("https://prizegift.space/update_step", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ telegram_id: appState.telegramId, step_number: stepNumber })
-        });
-        initAvatarView();
+    // Модалка: показать по клику
+    document.querySelectorAll(".task-item").forEach(item => {
+      item.addEventListener("click", () => {
+        const task = JSON.parse(item.dataset.task);
+        document.getElementById("modal-title").textContent = `Шаг ${task.step_number}`;
+        document.getElementById("modal-desc").textContent = task.detail || "Описание недоступно";
+        document.getElementById("modal-reward").textContent = `+${task.xp || 10} XP, +${task.coins || 5} монет`;
+        document.getElementById("task-modal").style.display = "flex";
       });
     });
 
-    // Переключение табов
-    const activeTab = document.getElementById("tab-active");
-    const completedTab = document.getElementById("tab-completed");
-    const taskList = document.getElementById("task-list");
-
-    activeTab.addEventListener("click", () => {
-      activeTab.classList.add("active");
-      completedTab.classList.remove("active");
-      taskList.innerHTML = renderTasks(activeTasks);
-    });
-
-    completedTab.addEventListener("click", () => {
-      completedTab.classList.add("active");
-      activeTab.classList.remove("active");
-      taskList.innerHTML = renderTasks(completedTasks, true);
+    document.getElementById("close-modal").addEventListener("click", () => {
+      document.getElementById("task-modal").style.display = "none";
     });
 
   } catch (err) {
