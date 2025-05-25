@@ -7,6 +7,12 @@ function renderContent(html) {
   document.getElementById("content").innerHTML = html;
 }
 
+function highlightTab(activeTab) {
+  document.querySelectorAll("nav button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.tab === activeTab);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const telegram = window.Telegram.WebApp;
   const user = telegram.initDataUnsafe?.user;
@@ -20,50 +26,43 @@ document.addEventListener("DOMContentLoaded", async () => {
   appState.firstName = user.first_name || "";
   appState.username = user.username || "";
 
-  // Загружаем шаги
   try {
     const res = await fetch(`https://prizegift.space/get_progress/${appState.telegramId}`);
-    if (!res.ok) throw new Error("Ошибка ответа сервера");
+    if (!res.ok) throw new Error("Ошибка ответа от сервера");
 
     const steps = await res.json();
     if (!Array.isArray(steps)) throw new Error("Неверный формат данных");
 
     appState.steps = steps;
-  } catch (error) {
-    console.error("Ошибка загрузки шагов:", error);
-    renderContent("<p style='color:red;'>Ошибка загрузки данных. Попробуйте позже</p>");
-    return;
-  }
 
-  // Рендерим начальную вкладку
-  initMainView();
-  highlightTab('main');
+    // Показываем главную вкладку
+    initMainView();
+    highlightTab('main');
 
-  // Обработка вкладок
-  document.querySelectorAll("nav button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const tab = btn.dataset.tab;
-      highlightTab(tab);
+    // Обработчики вкладок
+    document.querySelectorAll("nav button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+        highlightTab(tab);
 
-      switch (tab) {
-        case 'main':
-          initMainView();
-          break;
-        case 'profile':
-          initProfileView();
-          break;
-        case 'rewards':
-          initRewardsView();
-          break;
-        default:
-          renderContent("<p>Раздел в разработке</p>");
-      }
+        switch (tab) {
+          case 'main':
+            initMainView();
+            break;
+          case 'profile':
+            initProfileView();
+            break;
+          case 'rewards':
+            initRewardsView();
+            break;
+          default:
+            renderContent("<p>Раздел в разработке</p>");
+        }
+      });
     });
-  });
-});
 
-function highlightTab(activeTab) {
-  document.querySelectorAll("nav button").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.tab === activeTab);
-  });
-}
+  } catch (error) {
+    console.error("❌ Ошибка загрузки шагов:", error);
+    renderContent("<p style='color:red;'>Ошибка загрузки данных. Попробуйте позже</p>");
+  }
+});
