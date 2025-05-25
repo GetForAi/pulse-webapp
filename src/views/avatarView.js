@@ -1,62 +1,189 @@
-import { appState } from "../state.js";
-import { calculateXP, calculateLevel, calculateXPProgress } from "../utils.js";
-
-export function initAvatarView() {
-  const container = document.getElementById("content");
-
-  const level = calculateLevel(appState.xp);
-  const xpCurrent = calculateXPProgress(appState.xp);
-  const xpProgressPercent = Math.min((xpCurrent / 100) * 100, 100);
-
-  const tasks = [
-    { id: 1, title: "Пройти 5000 шагов", completed: false },
-    { id: 2, title: "Подписаться на канал", completed: true },
-    { id: 3, title: "Написать 3 цели на день", completed: false },
-  ];
-
-  const activeTasks = tasks.filter(t => !t.completed);
-  const completedTasks = tasks.filter(t => t.completed);
-
-  container.innerHTML = `
-    <div class="avatar-container">
-      <div class="avatar-figure level-${level}">🧍‍♂️</div>
-      <div class="stats-panel">
-        <p>🎓 Уровень: <span class="stat-num">${level}</span></p>
-        <p>🧠 XP: <span class="stat-num">${appState.xp}</span></p>
-        <p>💰 Монеты: <span class="stat-num">${appState.coins || 0}</span></p>
-        <div class="progress-bar">
-          <div class="progress-bar-fill" style="width: ${xpProgressPercent}%"></div>
-        </div>
-      </div>
-
-      <div class="task-tabs">
-        <button class="tab-btn active" data-tab="active">Активные</button>
-        <button class="tab-btn" data-tab="completed">Завершённые</button>
-      </div>
-
-      <div class="task-list" id="taskList">
-        ${renderTasks(activeTasks)}
-      </div>
-    </div>
-  `;
-
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      const tab = btn.dataset.tab;
-      const list = tab === "active" ? activeTasks : completedTasks;
-      document.getElementById("taskList").innerHTML = renderTasks(list);
-    });
-  });
+:root {
+  --bg: #f5f7fa;
+  --text: #1a1a1a;
+  --accent: #4b9eff;
+  --accent-dark: #3a8ee6;
+  --tabbar-active: #e6f0ff;
+  --xp: #ff70a6;
+  --level: #00b894;
 }
 
-function renderTasks(tasks) {
-  if (tasks.length === 0) return "<p>Заданий пока нет 🎉</p>";
-  return tasks.map(t => `
-    <div class="task-item ${t.completed ? 'done' : ''}">
-      ${t.completed ? "✅" : "🔘"} ${t.title}
-    </div>
-  `).join("");
+body.dark {
+  --bg: #121212;
+  --text: #ffffff;
+  --accent: #6ca0ff;
+  --accent-dark: #3c78e6;
+  --tabbar-active: #1f1f1f;
+  --xp: #f27ea9;
+  --level: #00e49c;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+#content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+h1, h2 {
+  margin: 0 0 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+p {
+  font-size: 0.95rem;
+  margin: 8px 0;
+}
+
+.level-section {
+  margin: 16px 0;
+}
+
+.level-section p {
+  margin: 6px 0;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 6px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  width: 0%;
+  transition: width 0.4s ease-in-out;
+  border-radius: 5px;
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-figure {
+  font-size: 5rem;
+  margin: 12px 0;
+  animation: pop 0.3s ease;
+}
+
+.stats-panel {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.task-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.task-tabs button {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s;
+}
+
+.task-tabs button.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.task-list {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.task-item {
+  padding: 12px;
+  background-color: #f0f4fa;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+body.dark .task-item {
+  background-color: #1e1e1e;
+}
+
+.task-item.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* =========== NAV ========== */
+.tabbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 56px;
+  background: var(--bg);
+  border-top: 1px solid #ddd;
+}
+
+.tabbar button {
+  flex: 1;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: var(--text);
+}
+
+.tabbar button:hover {
+  color: var(--accent);
+}
+
+.tabbar button.active {
+  background-color: var(--tabbar-active);
+  font-weight: 600;
+  border-top: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes pop {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
 }
