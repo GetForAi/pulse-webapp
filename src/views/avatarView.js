@@ -1,5 +1,6 @@
 import { appState } from "../state.js";
 import { calculateXP, calculateLevel } from "../utils.js";
+import { showTaskModal } from "./modals.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
@@ -11,29 +12,20 @@ export async function initAvatarView() {
 
     const steps = await res.json();
     appState.steps = steps;
+
     appState.xp = calculateXP(steps);
     const level = calculateLevel(appState.xp);
     const progressPercent = Math.min(100, (appState.xp % 50) * 2);
 
     const activeTasks = steps.filter(s => !s.completed);
-    const completedTasks = []; // Временно скрываем завершённые
-    if (activeTasks.length === 0) {
-      activeTasks.push({
-        step_number: 1,
-        description: "Протестировать отображение модального окна",
-        detail: "Нажмите на это задание, чтобы увидеть описание и награду",
-        xp: 15,
-        coins: 10,
-        completed: false
-      });
-    }
+    const completedTasks = steps.filter(s => s.completed);
 
     const avatarSymbol = level >= 5 ? "🧙‍♂️" : level >= 3 ? "🧑‍💼" : "🙂";
 
     const renderTasks = (list, done = false) =>
       list.map(task => `
         <div class="task-item ${done ? 'done' : ''}" data-task='${JSON.stringify(task)}'>
-          <div class="task-title">${task.step_number}. ${task.description || 'Неизвестное задание'}</div>
+          <div class="task-title">${task.step_number}. ${task.title || task.description}</div>
         </div>
       `).join("");
 
@@ -50,37 +42,38 @@ export async function initAvatarView() {
 
         <div class="task-tabs">
           <button id="tab-active" class="active">Активные</button>
-          <button id="tab-completed" disabled style="opacity:0.4">Завершённые</button>
+          <button id="tab-completed">Завершённые</button>
         </div>
 
         <div class="task-list" id="task-list">
           ${renderTasks(activeTasks)}
         </div>
       </div>
-      <div class="modal-overlay" id="task-modal" style="display:none;">
-        <div class="modal-box">
-          <h3 id="modal-title">Задание</h3>
-          <p id="modal-desc"></p>
-          <p id="modal-reward" class="modal-reward"></p>
-          <button class="modal-close" id="close-modal">Закрыть</button>
-        </div>
-      </div>
     `;
 
-    // Модалка: показать по клику
-    document.querySelectorAll(".task-item").forEach(item => {
-      item.addEventListener("click", () => {
-        const task = JSON.parse(item.dataset.task);
-        document.getElementById("modal-title").textContent = `Шаг ${task.step_number}`;
-        document.getElementById("modal-desc").textContent = task.detail || "Описание недоступно";
-        document.getElementById("modal-reward").textContent = `+${task.xp || 10} XP, +${task.coins || 5} монет`;
-        document.getElementById("task-modal").style.display = "flex";
+    const renderAndBind = (taskArray) => {
+      document.getElementById("task-list").innerHTML = renderTasks(taskArray);
+      document.querySelectorAll(".task-item").forEach(item => {
+        item.addEventListener("click", () => {
+          const task = JSON.parse(item.dataset.task);
+          showTaskModal(task);
+        });
       });
+    };
+
+    document.getElementById("tab-active").addEventListener("click", () => {
+      document.getElementById("tab-active").classList.add("active");
+      document.getElementById("tab-completed").classList.remove("active");
+      renderAndBind(activeTasks);
     });
 
-    document.getElementById("close-modal").addEventListener("click", () => {
-      document.getElementById("task-modal").style.display = "none";
+    document.getElementById("tab-completed").addEventListener("click", () => {
+      document.getElementById("tab-completed").classList.add("active");
+      document.getElementById("tab-active").classList.remove("active");
+      renderAndBind(completedTasks);
     });
+
+    renderAndBind(activeTasks); // первичная отрисовка
 
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
