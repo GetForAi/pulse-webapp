@@ -24,6 +24,12 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+body.blurred #app {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
 #app {
   width: 100%;
   max-width: 480px;
@@ -187,22 +193,13 @@ body {
   color: var(--accent);
 }
 
-@keyframes pop {
-  from { transform: scale(0.9); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
+/* ====== MODAL STYLES ====== */
 
-@keyframes fadeIn {
-  from { transform: translateY(10px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
-
-/* ========== MODAL TASK DETAIL ========== */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
@@ -215,8 +212,8 @@ body {
   background-color: #181b25;
   border-radius: 16px;
   padding: 24px 20px;
-  max-width: 320px;
-  width: 85%;
+  max-width: 340px;
+  width: 90%;
   box-shadow: 0 0 20px rgba(0, 255, 224, 0.2);
   text-align: center;
   animation: pop 0.25s ease;
@@ -241,6 +238,11 @@ body {
   font-size: 0.95rem;
 }
 
+.modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
 .modal-close {
   margin-top: 14px;
   background: var(--accent);
@@ -258,3 +260,12 @@ body {
   background: var(--accent-dark);
 }
 
+@keyframes pop {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
