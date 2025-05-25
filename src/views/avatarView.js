@@ -90,14 +90,18 @@ p {
 }
 
 .avatar-figure {
-  font-size: 5rem;
+  font-size: 6rem;
   margin: 12px 0;
   animation: pop 0.3s ease;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
+  transition: transform 0.3s ease;
 }
 
 .stats-panel {
   text-align: center;
   margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .task-tabs {
@@ -134,6 +138,24 @@ p {
   margin-bottom: 8px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-item button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+
+.task-item button:hover {
+  background: var(--accent-dark);
 }
 
 body.dark .task-item {
@@ -145,7 +167,6 @@ body.dark .task-item {
   opacity: 0.6;
 }
 
-/* =========== NAV ========== */
 .tabbar {
   display: flex;
   justify-content: space-around;
@@ -177,7 +198,6 @@ body.dark .task-item {
   color: var(--accent);
 }
 
-/* ========== ANIMATIONS ========== */
 @keyframes pop {
   from { transform: scale(0.9); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
