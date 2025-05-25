@@ -8,6 +8,17 @@
   --level: #00b894;
 }
 
+/* DARK THEME OVERRIDES */
+body.dark {
+  --bg: #121212;
+  --text: #ffffff;
+  --accent: #6ca0ff;
+  --accent-dark: #3c78e6;
+  --tabbar-active: #1f1f1f;
+  --xp: #f27ea9;
+  --level: #00e49c;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
@@ -18,6 +29,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 #app {
@@ -27,6 +39,7 @@ body {
   display: flex;
   flex-direction: column;
   background: #fff;
+  background-color: var(--bg);
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
@@ -39,7 +52,7 @@ body {
 h1, h2 {
   margin: 0 0 16px;
   font-weight: 800;
-  color: #222;
+  color: var(--text);
 }
 
 p {
@@ -91,8 +104,17 @@ p {
   transition: all 0.2s ease;
 }
 
+body.dark .step {
+  background-color: #1e1e1e;
+  box-shadow: 0 1px 3px rgba(255,255,255,0.05);
+}
+
 .step:hover {
   background-color: #e6eef7;
+}
+
+body.dark .step:hover {
+  background-color: #2b2b2b;
 }
 
 .step button {
@@ -116,12 +138,13 @@ p {
   font-size: 0.95rem;
 }
 
+/* =========== NAV ========== */
 .tabbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
   height: 56px;
-  background: #fff;
+  background: var(--bg);
   border-top: 1px solid #ddd;
 }
 
@@ -147,7 +170,7 @@ p {
   color: var(--accent);
 }
 
-/* Награды */
+/* ========== REWARDS ========== */
 .reward-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -165,6 +188,10 @@ p {
   opacity: 0.6;
   position: relative;
   animation: fadeIn 0.3s ease;
+}
+
+body.dark .reward-card {
+  background-color: #1e1e1e;
 }
 
 .reward-card.unlocked {
@@ -195,7 +222,7 @@ p {
   margin-top: 4px;
 }
 
-/* Модальные окна */
+/* ========== MODALS ========== */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -248,7 +275,53 @@ p {
   background: var(--accent-dark);
 }
 
-/* Анимации */
+/* ========== SETTINGS SECTION ========== */
+.settings-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.settings-block label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-btn {
+  width: 48px;
+  height: 26px;
+  background: #ccc;
+  border-radius: 13px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-btn::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.2s ease;
+}
+
+.toggle-btn.active {
+  background: var(--accent);
+}
+
+.toggle-btn.active::before {
+  transform: translateX(22px);
+}
+
+/* ========== ANIMATIONS ========== */
 @keyframes pop {
   from { transform: scale(0.9); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
