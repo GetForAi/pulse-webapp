@@ -25,8 +25,7 @@ export async function initAvatarView() {
     const renderTasks = (list, done = false) =>
       list.map(task => `
         <div class="task-item ${done ? 'done' : ''}" data-task='${JSON.stringify(task)}'>
-          <div class="task-title">${task.step_number}. ${task.title || 'Без названия'}</div>
-          ${task.description ? `<div class="task-desc">${task.description}</div>` : ''}
+          <div class="task-title">${task.title || 'Задание'}</div>
         </div>
       `).join("");
 
@@ -56,9 +55,13 @@ export async function initAvatarView() {
       document.getElementById("task-list").innerHTML = renderTasks(taskArray);
       document.querySelectorAll(".task-item").forEach(item => {
         const task = JSON.parse(item.dataset.task);
-        item.addEventListener("click", () => showTaskModal(task));
+        item.addEventListener("click", () => showTaskModal(task, reloadView));
       });
     };
+
+    function reloadView() {
+      initAvatarView(); // обновим интерфейс после проверки
+    }
 
     document.getElementById("tab-active").addEventListener("click", () => {
       document.getElementById("tab-active").classList.add("active");
@@ -72,7 +75,7 @@ export async function initAvatarView() {
       renderAndBind(completedTasks);
     });
 
-    renderAndBind(activeTasks); // Первичная отрисовка
+    renderAndBind(activeTasks);
 
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
