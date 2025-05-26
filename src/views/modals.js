@@ -43,7 +43,7 @@ export function showTaskModal(task) {
   modal.innerHTML = `
     <div class="modal-box">
       <h3>${title}</h3>
-      <p>${detail || "Описание недоступно"}</p>
+      <p>${task.description || "Описание недоступно"}</p>
       <p class="modal-reward">+${xp || 0} XP, +${coins || 0} монет</p>
 
       ${type === "subscribe" && !completed ? `
