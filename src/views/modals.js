@@ -1,5 +1,4 @@
 import { appState } from "../state.js";
-import { showModal } from "./modals.js";
 
 /**
  * Универсальная модалка (ошибки, уведомления и т.д.)
@@ -29,7 +28,6 @@ export function showModal({ title, message, icon = "" }) {
 
 /**
  * Модалка для задания с кнопками перехода и проверки
- * @param {Object} task
  */
 export function showTaskModal(task) {
   const { title, detail, xp, coins, task_meta, step_number, type, completed } = task;
@@ -85,13 +83,12 @@ export function showTaskModal(task) {
 
         const data = await res.json();
         if (data.subscribed) {
-          // Отметим как завершённое
           await fetch("https://prizegift.space/update_step", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               telegram_id: appState.telegramId,
-              step_number: step_number,
+              step_number,
             }),
           });
 
@@ -103,7 +100,6 @@ export function showTaskModal(task) {
 
           modal.remove();
           document.body.classList.remove("blurred");
-
           setTimeout(() => window.location.reload(), 800);
         } else {
           showModal({
