@@ -243,21 +243,51 @@ body.blurred #app {
   margin-bottom: 10px;
 }
 
-.modal-close {
-  margin-top: 14px;
-  background: var(--accent);
-  color: #000;
+.modal-close,
+.modal-check,
+.subscribe-btn {
+  margin-top: 12px;
+  display: inline-block;
   padding: 8px 16px;
-  border: none;
-  border-radius: 10px;
   font-size: 0.95rem;
   font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
   cursor: pointer;
   transition: background 0.2s ease;
 }
 
+.modal-close {
+  background: var(--accent);
+  color: #000;
+  border: none;
+}
+
 .modal-close:hover {
   background: var(--accent-dark);
+}
+
+.modal-check {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  margin-left: 10px;
+}
+
+.modal-check:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+.subscribe-btn {
+  background: var(--accent-dark);
+  color: #000;
+  text-align: center;
+}
+
+.subscribe-btn:hover {
+  background: var(--accent);
+  color: #000;
 }
 
 @keyframes pop {
