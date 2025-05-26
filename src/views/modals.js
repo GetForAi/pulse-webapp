@@ -30,20 +30,19 @@ export function showModal({ title, message, icon = "" }) {
  * Модалка для задания с кнопками перехода и проверки
  */
 export function showTaskModal(task) {
-  const { title, detail, xp, coins, task_meta, step_number, type, completed } = task;
+  const { title, description, xp, coins, task_meta, step_number, type, completed } = task;
 
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
 
-  let channelLink = "";
-  if (type === "subscribe" && task_meta?.channel_username) {
-    channelLink = `https://t.me/${task_meta.channel_username}`;
-  }
+  // 💡 Вставь сюда имя канала, если не указано в task_meta
+  const channelUsername = task_meta?.channel_username || "pulse_channel";
+  const channelLink = `https://t.me/${channelUsername}`;
 
   modal.innerHTML = `
     <div class="modal-box">
       <h3>${title}</h3>
-      <p>${task.description || "Описание недоступно"}</p>
+      <p>${description || "Описание недоступно"}</p>
       <p class="modal-reward">+${xp || 0} XP, +${coins || 0} монет</p>
 
       ${type === "subscribe" && !completed ? `
@@ -77,7 +76,7 @@ export function showTaskModal(task) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             telegram_id: appState.telegramId,
-            channel: task_meta.channel_username,
+            channel: channelUsername
           }),
         });
 
@@ -88,24 +87,25 @@ export function showTaskModal(task) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               telegram_id: appState.telegramId,
-              step_number,
+              step_number
             }),
           });
 
           showModal({
             title: "🎉 Готово!",
             message: `Вы подписались и получили ${xp} XP и ${coins} монет.`,
-            icon: "✅",
+            icon: "✅"
           });
 
           modal.remove();
           document.body.classList.remove("blurred");
+
           setTimeout(() => window.location.reload(), 800);
         } else {
           showModal({
             title: "Не найдено подписки",
-            message: "Вы ещё не подписались на канал или Telegram не обновил данные.",
-            icon: "❌",
+            message: "Вы ещё не подписались на канал или Telegram не успел обновить данные.",
+            icon: "❌"
           });
           checkBtn.disabled = false;
           checkBtn.textContent = "Проверить";
@@ -115,7 +115,7 @@ export function showTaskModal(task) {
         showModal({
           title: "Ошибка проверки",
           message: "Не удалось проверить подписку. Попробуйте позже.",
-          icon: "⚠️",
+          icon: "⚠️"
         });
         checkBtn.disabled = false;
         checkBtn.textContent = "Проверить";
