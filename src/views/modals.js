@@ -28,14 +28,15 @@ export function showModal({ title, message, icon = "" }) {
 
 /**
  * Модалка для задания с кнопками перехода и проверки
+ * @param {Object} task
+ * @param {Function} reloadCallback — функция перезагрузки интерфейса
  */
-export function showTaskModal(task) {
+export function showTaskModal(task, reloadCallback) {
   const { title, description, xp, coins, task_meta, step_number, type, completed } = task;
 
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
 
-  // 💡 Вставь сюда имя канала, если не указано в task_meta
   const channelUsername = task_meta?.channel_username || "pulse_channel";
   const channelLink = `https://t.me/${channelUsername}`;
 
@@ -82,7 +83,7 @@ export function showTaskModal(task) {
 
         const data = await res.json();
         if (data.subscribed) {
-          await fetch("https://prizegift.space/update_step", {
+          const updateRes = await fetch("https://prizegift.space/update_step", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -91,16 +92,22 @@ export function showTaskModal(task) {
             }),
           });
 
+          const updated = await updateRes.json();
+          const { xp: newXP, coins: newCoins, level: newLevel } = updated;
+
           showModal({
             title: "🎉 Готово!",
-            message: `Вы подписались и получили ${xp} XP и ${coins} монет.`,
+            message: `Вы подписались и получили ${xp} XP и ${coins} монет.\n\nТеперь у вас ${newXP} XP и уровень ${newLevel}.`,
             icon: "✅"
           });
 
           modal.remove();
           document.body.classList.remove("blurred");
 
-          setTimeout(() => window.location.reload(), 800);
+          if (typeof reloadCallback === "function") {
+            setTimeout(reloadCallback, 800);
+          }
+
         } else {
           showModal({
             title: "Не найдено подписки",
@@ -110,6 +117,7 @@ export function showTaskModal(task) {
           checkBtn.disabled = false;
           checkBtn.textContent = "Проверить";
         }
+
       } catch (err) {
         console.error(err);
         showModal({
