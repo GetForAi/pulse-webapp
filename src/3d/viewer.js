@@ -2,8 +2,10 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js";
 
-export function load3DAvatar(containerId, level = 1) {
-  const container = document.getElementById(containerId);
+export function loadAvatarModel(level = 1) {
+  const container = document.getElementById("avatar-3d");
+  if (!container) return;
+
   container.innerHTML = "";
 
   const scene = new THREE.Scene();
@@ -48,6 +50,7 @@ export function load3DAvatar(containerId, level = 1) {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
     }
+
     animate();
   });
 }
