@@ -1,11 +1,9 @@
-// src/views/avatarView.js
 import { appState } from "../state.js";
 import {
   calculateXPProgress,
   calculateXPMaxForLevel
 } from "../utils.js";
 import { showTaskModal } from "./modals.js";
-import { loadAvatarModel } from "../3d/viewer.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
@@ -63,8 +61,8 @@ export async function initAvatarView() {
       </div>
     `;
 
-    // ✅ Загружаем 3D-модель ПОСЛЕ вставки в DOM
-    await loadAvatarModel("avatar-3d", appState.level);
+    // 🔥 Загружаем модель без импорта — как глобальную
+    window.loadAvatarModel("avatar-3d", appState.level);
 
     const renderAndBind = (taskArray) => {
       document.getElementById("task-list").innerHTML = renderTasks(taskArray);
