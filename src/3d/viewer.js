@@ -1,5 +1,4 @@
 // src/3d/viewer.js
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js";
 
 export function load3DAvatar(containerId, level = 1) {
