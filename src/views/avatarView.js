@@ -4,6 +4,7 @@ import {
   calculateXPMaxForLevel
 } from "../utils.js";
 import { showTaskModal } from "./modals.js";
+import { loadAvatarModel } from "../avatar3d/viewer.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
@@ -26,9 +27,6 @@ export async function initAvatarView() {
     const activeTasks = appState.steps.filter(s => !s.completed);
     const completedTasks = appState.steps.filter(s => s.completed);
 
-    const avatarSymbol = appState.level >= 5 ? "🧙‍♂️" :
-                         appState.level >= 3 ? "🧑‍💼" : "🙂";
-
     const renderTasks = (list, done = false) =>
       list.map(task => `
         <div class="task-item ${done ? 'done' : ''}" data-task='${JSON.stringify(task)}'>
@@ -38,7 +36,6 @@ export async function initAvatarView() {
 
     container.innerHTML = `
       <div class="avatar-container">
-        <div class="avatar-figure">${avatarSymbol}</div>
         <div class="level-xp">
           <div class="level">Уровень ${appState.level}</div>
           <div class="xp">${xpInLevel} / ${xpMax} XP</div>
@@ -46,6 +43,8 @@ export async function initAvatarView() {
         <div class="progress-bar">
           <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
         </div>
+
+        <div id="avatar-3d" style="width: 100%; height: 220px; margin: 15px 0;"></div>
 
         <div class="task-tabs">
           <button id="tab-active" class="active">Активные</button>
@@ -57,6 +56,8 @@ export async function initAvatarView() {
         </div>
       </div>
     `;
+
+    await loadAvatarModel(appState.level);
 
     const renderAndBind = (taskArray) => {
       document.getElementById("task-list").innerHTML = renderTasks(taskArray);
