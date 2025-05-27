@@ -21,16 +21,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Сохраняем пользователя
+  // Сохраняем Telegram-пользователя в appState
   appState.telegramId = String(user.id);
   appState.firstName = user.first_name || "";
   appState.username = user.username || "";
 
   try {
-    await initAvatarView(); // Главная вкладка
+    // ⬇️ Добавлено: регистрация пользователя при первом входе
+    await fetch("https://prizegift.space/start_user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegram_id: appState.telegramId })
+    });
+
+    // Загружаем основную вкладку
+    await initAvatarView();
     highlightTab('main');
 
-    // Навигация по вкладкам
+    // Обработчики навигации
     document.querySelectorAll("nav button").forEach(btn => {
       btn.addEventListener("click", async () => {
         const tab = btn.dataset.tab;
