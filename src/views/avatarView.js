@@ -1,10 +1,11 @@
+// src/views/avatarView.js
 import { appState } from "../state.js";
 import {
   calculateXPProgress,
   calculateXPMaxForLevel
 } from "../utils.js";
 import { showTaskModal } from "./modals.js";
-import { loadAvatarModel } from "../avatar3d/viewer.js";
+import { loadAvatarModel } from "../3d/viewer.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
