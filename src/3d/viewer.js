@@ -2,10 +2,10 @@
 
 function loadAvatarModel(containerId = "avatar-3d", level = 1) {
   const container = document.getElementById(containerId);
-  container.innerHTML = "";
+  if (!container) return;
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
+  const scene = new window.THREE.Scene();
+  const camera = new window.THREE.PerspectiveCamera(
     35,
     container.clientWidth / container.clientHeight,
     0.1,
@@ -13,15 +13,14 @@ function loadAvatarModel(containerId = "avatar-3d", level = 1) {
   );
   camera.position.set(0, 1.5, 3);
 
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  const renderer = new window.THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
+  const light = new window.THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
   scene.add(light);
 
-  // ❗️Используем глобальный GLTFLoader, а не THREE.GLTFLoader
-  const loader = new GLTFLoader();
+  const loader = new window.GLTFLoader();
   loader.load(`/models/level${level}.glb`, gltf => {
     const model = gltf.scene;
     model.scale.set(1.5, 1.5, 1.5);
@@ -56,3 +55,6 @@ function loadAvatarModel(containerId = "avatar-3d", level = 1) {
     animate();
   });
 }
+
+// 👇 Делаем глобально доступной
+window.loadAvatarModel = loadAvatarModel;
