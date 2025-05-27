@@ -1,56 +1,53 @@
-import * as THREE from "https://cdn.skypack.dev/three";
-import { GLTFLoader } from "https://cdn.skypack.dev/three/examples/jsm/loaders/GLTFLoader.js";
-import { avatarModels } from "./models.js";
+// src/3d/viewer.js
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js";
 
-let scene, camera, renderer, model, container;
-let isDragging = false, previousX = 0;
+export function load3DAvatar(containerId, level = 1) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = ""; // Очищаем перед загрузкой
 
-export async function loadAvatarModel(level) {
-  const modelPath = avatarModels[level] || avatarModels[1];
-  if (!container) container = document.getElementById("avatar-3d");
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
+  camera.position.set(0, 1.5, 3);
 
-  // Очистка
-  container.innerHTML = "";
-
-  // Инициализация сцены
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.z = 2;
-
-  renderer = new THREE.WebGLRenderer({ alpha: true });
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-  light.position.set(0, 20, 0);
+  const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
   scene.add(light);
 
   const loader = new GLTFLoader();
-  loader.load(modelPath, gltf => {
-    model = gltf.scene;
+  loader.load(`/models/level${level}.glb`, gltf => {
+    const model = gltf.scene;
+    model.scale.set(1.5, 1.5, 1.5);
+    model.rotation.y = Math.PI; // Повернём лицом вперёд
     scene.add(model);
+
+    let isDragging = false;
+    let previousX = 0;
+
+    renderer.domElement.addEventListener("mousedown", e => {
+      isDragging = true;
+      previousX = e.clientX;
+    });
+
+    renderer.domElement.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    renderer.domElement.addEventListener("mousemove", e => {
+      if (isDragging) {
+        const deltaX = e.clientX - previousX;
+        model.rotation.y += deltaX * 0.01;
+        previousX = e.clientX;
+      }
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
     animate();
   });
-
-  // Вращение по drag
-  renderer.domElement.addEventListener("mousedown", e => {
-    isDragging = true;
-    previousX = e.clientX;
-  });
-
-  renderer.domElement.addEventListener("mousemove", e => {
-    if (isDragging && model) {
-      const deltaX = e.clientX - previousX;
-      model.rotation.y += deltaX * 0.01;
-      previousX = e.clientX;
-    }
-  });
-
-  window.addEventListener("mouseup", () => isDragging = false);
 }
-
-function animate() {
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
-}
-
