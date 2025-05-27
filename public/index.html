@@ -12,24 +12,23 @@
   <link rel="stylesheet" href="/src/style.css" />
   <link rel="icon" href="/assets/favicon.png" />
 
-  <!-- Защита от масштабирования -->
   <style>
     body {
       touch-action: manipulation;
     }
   </style>
 
-  <!-- THREE.js и GLTFLoader: подключаем строго ДО viewer.js -->
+  <!-- THREE.js и GLTFLoader как обычные скрипты -->
   <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
   <script src="https://unpkg.com/three@0.153.0/examples/js/loaders/GLTFLoader.js"></script>
 
-  <!-- ✅ Принудительно сохраняем глобальные переменные -->
+  <!-- Глобальная регистрация -->
   <script>
     window.THREE = window.THREE || THREE;
-    window.GLTFLoader = GLTFLoader;
+    window.GLTFLoader = window.GLTFLoader || GLTFLoader;
   </script>
 
-  <!-- viewer.js: глобальная функция loadAvatarModel -->
+  <!-- viewer.js без export/import -->
   <script src="/src/3d/viewer.js"></script>
 </head>
 <body>
@@ -40,7 +39,52 @@
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Главный модуль (type="module") -->
+  <!-- Основной модуль -->
+  <script type="module" src="/src/script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Pulse</title>
+
+  <!-- Шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="icon" href="/assets/favicon.png" />
+
+  <style>
+    body {
+      touch-action: manipulation;
+    }
+  </style>
+
+  <!-- THREE.js и GLTFLoader как обычные скрипты -->
+  <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.153.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <!-- Глобальная регистрация -->
+  <script>
+    window.THREE = window.THREE || THREE;
+    window.GLTFLoader = window.GLTFLoader || GLTFLoader;
+  </script>
+
+  <!-- viewer.js без export/import -->
+  <script src="/src/3d/viewer.js"></script>
+</head>
+<body>
+  <div id="app">
+    <main id="content" role="main" aria-live="polite">Загрузка...</main>
+  </div>
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Основной модуль -->
   <script type="module" src="/src/script.js"></script>
 </body>
 </html>
