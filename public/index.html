@@ -10,27 +10,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/src/style.css" />
-
-  <!-- Favicon (опционально) -->
   <link rel="icon" href="/assets/favicon.png" />
 
-  <!-- Отключение масштабирования на iOS -->
+  <!-- Защита от масштабирования -->
   <style>
     body {
       touch-action: manipulation;
     }
   </style>
 
-  <!-- THREE.js и GLTFLoader (глобально) -->
+  <!-- THREE.js и GLTFLoader: подключаем строго ДО viewer.js -->
   <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
   <script src="https://unpkg.com/three@0.153.0/examples/js/loaders/GLTFLoader.js"></script>
 
-  <!-- 💡 ОБЯЗАТЕЛЬНО: вручную сделать GLTFLoader доступным -->
+  <!-- ✅ Принудительно сохраняем глобальные переменные -->
   <script>
+    window.THREE = window.THREE || THREE;
     window.GLTFLoader = GLTFLoader;
   </script>
 
-  <!-- viewer.js — глобальная функция loadAvatarModel -->
+  <!-- viewer.js: глобальная функция loadAvatarModel -->
   <script src="/src/3d/viewer.js"></script>
 </head>
 <body>
@@ -41,7 +40,7 @@
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Основной JS -->
+  <!-- Главный модуль (type="module") -->
   <script type="module" src="/src/script.js"></script>
 </body>
 </html>
