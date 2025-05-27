@@ -1,5 +1,3 @@
-// public/models/viewer.js
-
 function loadAvatarModel(containerId = "avatar-3d", level = 1) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
@@ -55,3 +53,6 @@ function loadAvatarModel(containerId = "avatar-3d", level = 1) {
     animate();
   });
 }
+
+// 👇 Сделать глобальной для вызова из avatarView.js
+window.loadAvatarModel = loadAvatarModel;
