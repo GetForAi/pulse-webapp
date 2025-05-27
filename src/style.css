@@ -299,3 +299,18 @@ body.blurred #app {
   from { transform: translateY(10px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
+
+/* 🔒 Блокировка масштабирования на мобильных */
+html, body {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+/* Разрешаем выделение, когда модалка активна */
+body.blurred {
+  user-select: none;
+  pointer-events: none;
+}
