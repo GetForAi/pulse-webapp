@@ -5,10 +5,15 @@ import {
   calculateXPMaxForLevel
 } from "../utils.js";
 import { showTaskModal } from "./modals.js";
-import { loadAvatarModel } from "../3d/viewer.js?v=3";
+import { loadAvatarModel } from "../3d/viewer.js"; // ❌ не добавляй `?v=3` — Vercel сам кеширует правильно
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
+  if (!container) {
+    console.error("❌ Не найден контейнер #content");
+    return;
+  }
+
   container.innerHTML = `<p>Загрузка...</p>`;
 
   try {
@@ -58,8 +63,10 @@ export async function initAvatarView() {
       </div>
     `;
 
+    // ✅ Загружаем 3D-модель
     await loadAvatarModel("avatar-3d", appState.level);
 
+    // 🎯 Вешаем обработчики
     const renderAndBind = (taskArray) => {
       document.getElementById("task-list").innerHTML = renderTasks(taskArray);
       document.querySelectorAll(".task-item").forEach(item => {
@@ -69,7 +76,7 @@ export async function initAvatarView() {
     };
 
     function reloadView() {
-      initAvatarView();
+      initAvatarView(); // Перезагружаем после выполнения
     }
 
     document.getElementById("tab-active").addEventListener("click", () => {
@@ -84,7 +91,7 @@ export async function initAvatarView() {
       renderAndBind(completedTasks);
     });
 
-    renderAndBind(activeTasks);
+    renderAndBind(activeTasks); // первичная отрисовка
 
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
