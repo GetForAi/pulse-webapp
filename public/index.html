@@ -20,16 +20,17 @@
   <!-- Favicon (опционально) -->
   <link rel="icon" href="/assets/favicon.png" />
 
-  <!-- Отключение двойного масштабирования на iOS -->
+  <!-- Отключение масштабирования на iOS -->
   <style>
     body {
       touch-action: manipulation;
     }
   </style>
 
-  <!-- THREE.js и GLTFLoader (глобально, без import/export) -->
+  <!-- THREE.js и GLTFLoader (глобальные версии) -->
   <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
   <script src="https://unpkg.com/three@0.153.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="/models/viewer.js"></script> <!-- 👈 Подключаем viewer.js -->
 </head>
 <body>
   <div id="app">
