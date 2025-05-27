@@ -18,11 +18,11 @@ export function showModal({ title, message, icon = "" }) {
     </div>
   `;
   document.body.appendChild(modal);
-  document.body.classList.add("blurred");
+  document.getElementById("app").classList.add("blurred");
 
   modal.querySelector(".modal-close").onclick = () => {
     modal.remove();
-    document.body.classList.remove("blurred");
+    document.getElementById("app").classList.remove("blurred");
   };
 }
 
@@ -58,11 +58,11 @@ export function showTaskModal(task, reloadCallback) {
   `;
 
   document.body.appendChild(modal);
-  document.body.classList.add("blurred");
+  document.getElementById("app").classList.add("blurred");
 
   document.getElementById("close-task-modal").onclick = () => {
     modal.remove();
-    document.body.classList.remove("blurred");
+    document.getElementById("app").classList.remove("blurred");
   };
 
   const checkBtn = document.getElementById("check-subscribe");
@@ -102,7 +102,7 @@ export function showTaskModal(task, reloadCallback) {
           });
 
           modal.remove();
-          document.body.classList.remove("blurred");
+          document.getElementById("app").classList.remove("blurred");
 
           if (typeof reloadCallback === "function") {
             setTimeout(reloadCallback, 800);
