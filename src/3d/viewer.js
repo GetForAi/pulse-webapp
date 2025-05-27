@@ -1,10 +1,9 @@
 // src/3d/viewer.js
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'https://unpkg.com/three@0.160.1/build/three.module.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.160.1/examples/jsm/loaders/GLTFLoader.js';
 
 export async function loadAvatarModel(containerId = "avatar-3d", level = 1) {
   const container = document.getElementById(containerId);
-  if (!container) return;
   container.innerHTML = "";
 
   const scene = new THREE.Scene();
@@ -19,7 +18,7 @@ export async function loadAvatarModel(containerId = "avatar-3d", level = 1) {
   scene.add(light);
 
   const loader = new GLTFLoader();
-  loader.load(`/models/level${level}.glb`, (gltf) => {
+  loader.load(`/models/level${level}.glb`, gltf => {
     const model = gltf.scene;
     model.scale.set(1.5, 1.5, 1.5);
     model.rotation.y = Math.PI;
@@ -28,7 +27,7 @@ export async function loadAvatarModel(containerId = "avatar-3d", level = 1) {
     let isDragging = false;
     let previousX = 0;
 
-    renderer.domElement.addEventListener("mousedown", (e) => {
+    renderer.domElement.addEventListener("mousedown", e => {
       isDragging = true;
       previousX = e.clientX;
     });
@@ -37,7 +36,7 @@ export async function loadAvatarModel(containerId = "avatar-3d", level = 1) {
       isDragging = false;
     });
 
-    renderer.domElement.addEventListener("mousemove", (e) => {
+    renderer.domElement.addEventListener("mousemove", e => {
       if (isDragging) {
         const deltaX = e.clientX - previousX;
         model.rotation.y += deltaX * 0.01;
