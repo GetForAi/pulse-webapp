@@ -61,7 +61,7 @@ export async function initAvatarView() {
       </div>
     `;
 
-    // 🔥 Загружаем модель без импорта — как глобальную
+    // 💥 Глобальный вызов (без import)
     window.loadAvatarModel("avatar-3d", appState.level);
 
     const renderAndBind = (taskArray) => {
