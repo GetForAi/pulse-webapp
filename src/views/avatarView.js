@@ -5,7 +5,7 @@ import {
   calculateXPMaxForLevel
 } from "../utils.js";
 import { showTaskModal } from "./modals.js";
-loadAvatarModel("avatar-3d", appState.level);
+import { loadAvatarModel } from "../3d/viewer.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
@@ -63,10 +63,9 @@ export async function initAvatarView() {
       </div>
     `;
 
-    // ✅ Загружаем 3D-модель
+    // ✅ Загружаем 3D-модель ПОСЛЕ вставки в DOM
     await loadAvatarModel("avatar-3d", appState.level);
 
-    // 🎯 Вешаем обработчики
     const renderAndBind = (taskArray) => {
       document.getElementById("task-list").innerHTML = renderTasks(taskArray);
       document.querySelectorAll(".task-item").forEach(item => {
@@ -76,7 +75,7 @@ export async function initAvatarView() {
     };
 
     function reloadView() {
-      initAvatarView(); // Перезагружаем после выполнения
+      initAvatarView();
     }
 
     document.getElementById("tab-active").addEventListener("click", () => {
@@ -91,7 +90,7 @@ export async function initAvatarView() {
       renderAndBind(completedTasks);
     });
 
-    renderAndBind(activeTasks); // первичная отрисовка
+    renderAndBind(activeTasks);
 
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
