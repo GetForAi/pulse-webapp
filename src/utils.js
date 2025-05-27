@@ -1,25 +1,54 @@
-// Считает XP только за выполненные шаги (по 10 XP за каждый)
+// Конфигурация шкалы XP — можно менять по своему усмотрению
+export function getXPThreshold(level) {
+  // Например: 100 XP для 1-го уровня, 150 для 2-го, 200 для 3-го и т.д.
+  return 100 + (level - 1) * 50;
+}
+
+// Подсчитывает общий XP за выполненные шаги
 export function calculateXP(steps) {
-  return steps.filter(step => step.completed).length * 10;
+  return steps
+    .filter(step => step.completed)
+    .reduce((total, step) => total + (step.xp || 0), 0);
 }
 
-// Уровень повышается каждые 100 XP (можно менять)
+// Рассчитывает уровень на основе накопленного XP
 export function calculateLevel(xp) {
-  return Math.floor(xp / 100) + 1;
+  let level = 1;
+  let xpLeft = xp;
+
+  while (xpLeft >= getXPThreshold(level)) {
+    xpLeft -= getXPThreshold(level);
+    level++;
+  }
+
+  return level;
 }
 
-// Прогресс внутри текущего уровня (0–100)
+// Вычисляет текущий XP в пределах уровня (например: 30 из 150)
 export function calculateXPProgress(xp) {
-  return xp % 100;
+  let level = calculateLevel(xp);
+  let totalXPForPrevLevels = 0;
+
+  for (let i = 1; i < level; i++) {
+    totalXPForPrevLevels += getXPThreshold(i);
+  }
+
+  return xp - totalXPForPrevLevels;
 }
 
-// Не используется пока, но может быть полезно позже
+// Возвращает максимальный XP для текущего уровня
+export function calculateXPMaxForLevel(xp) {
+  const level = calculateLevel(xp);
+  return getXPThreshold(level);
+}
+
+// Не используется пока, но может пригодиться для роутинга
 export function navigate(path) {
   history.pushState({}, '', path);
   window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
-// Получение темы Telegram WebApp
+// Получение текущей темы Telegram WebApp
 export function getThemeParams() {
   return window.Telegram?.WebApp?.themeParams || {};
 }
