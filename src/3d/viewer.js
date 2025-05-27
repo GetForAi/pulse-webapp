@@ -20,7 +20,8 @@ function loadAvatarModel(containerId = "avatar-3d", level = 1) {
   const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
   scene.add(light);
 
-  const loader = new GLTFLoader(); // ✅ Без THREE.
+  // ❗️Используем THREE.GLTFLoader, а не просто GLTFLoader
+  const loader = new THREE.GLTFLoader();
   loader.load(`/models/level${level}.glb`, gltf => {
     const model = gltf.scene;
     model.scale.set(1.5, 1.5, 1.5);
