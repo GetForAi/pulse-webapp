@@ -5,7 +5,7 @@ import {
   calculateXPMaxForLevel
 } from "../utils.js";
 import { showTaskModal } from "./modals.js";
-import { loadAvatarModel } from "../3d/viewer.js";
+import { loadAvatarModel } from "../3d/viewer.js?v=3";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
