@@ -1,7 +1,5 @@
 import { appState } from "../state.js";
 import {
-  calculateXP,
-  calculateLevel,
   calculateXPProgress,
   calculateXPMaxForLevel
 } from "../utils.js";
@@ -15,19 +13,21 @@ export async function initAvatarView() {
     const res = await fetch(`https://prizegift.space/get_progress/${appState.telegramId}`);
     if (!res.ok) throw new Error("Ошибка ответа сервера");
 
-    const steps = await res.json();
-    appState.steps = steps;
+    const data = await res.json();
 
-    appState.xp = calculateXP(steps);
-    const level = calculateLevel(appState.xp);
-    const xpInLevel = calculateXPProgress(appState.xp);
-    const xpMax = calculateXPMaxForLevel(appState.xp);
+    appState.steps = data.steps || [];
+    appState.xp = data.xp || 0;
+    appState.level = data.level || 1;
+
+    const xpInLevel = calculateXPProgress(appState.xp, appState.level);
+    const xpMax = calculateXPMaxForLevel(appState.level);
     const progressPercent = Math.floor((xpInLevel / xpMax) * 100);
 
-    const activeTasks = steps.filter(s => !s.completed);
-    const completedTasks = steps.filter(s => s.completed);
+    const activeTasks = appState.steps.filter(s => !s.completed);
+    const completedTasks = appState.steps.filter(s => s.completed);
 
-    const avatarSymbol = level >= 5 ? "🧙‍♂️" : level >= 3 ? "🧑‍💼" : "🙂";
+    const avatarSymbol = appState.level >= 5 ? "🧙‍♂️" :
+                         appState.level >= 3 ? "🧑‍💼" : "🙂";
 
     const renderTasks = (list, done = false) =>
       list.map(task => `
@@ -40,7 +40,7 @@ export async function initAvatarView() {
       <div class="avatar-container">
         <div class="avatar-figure">${avatarSymbol}</div>
         <div class="level-xp">
-          <div class="level">Уровень ${level}</div>
+          <div class="level">Уровень ${appState.level}</div>
           <div class="xp">${xpInLevel} / ${xpMax} XP</div>
         </div>
         <div class="progress-bar">
@@ -67,7 +67,7 @@ export async function initAvatarView() {
     };
 
     function reloadView() {
-      initAvatarView(); // обновление интерфейса после награды
+      initAvatarView();
     }
 
     document.getElementById("tab-active").addEventListener("click", () => {
@@ -82,7 +82,7 @@ export async function initAvatarView() {
       renderAndBind(completedTasks);
     });
 
-    renderAndBind(activeTasks); // первичная отрисовка
+    renderAndBind(activeTasks);
 
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
