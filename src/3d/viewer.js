@@ -1,6 +1,9 @@
-export function load3DAvatar(containerId, level = 1) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = ""; // Очищаем перед загрузкой
+// src/3d/viewer.js
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js";
+
+export function loadAvatarModel(level = 1) {
+  const container = document.getElementById("avatar-3d");
+  container.innerHTML = "";
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -13,11 +16,11 @@ export function load3DAvatar(containerId, level = 1) {
   const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
   scene.add(light);
 
-  const loader = new THREE.GLTFLoader(); // Используем глобальный объект
+  const loader = new GLTFLoader();
   loader.load(`/models/level${level}.glb`, gltf => {
     const model = gltf.scene;
     model.scale.set(1.5, 1.5, 1.5);
-    model.rotation.y = Math.PI; // Повернём лицом вперёд
+    model.rotation.y = Math.PI;
     scene.add(model);
 
     let isDragging = false;
@@ -45,7 +48,5 @@ export function load3DAvatar(containerId, level = 1) {
       renderer.render(scene, camera);
     }
     animate();
-  }, undefined, error => {
-    console.error("Ошибка загрузки GLB модели:", error);
   });
 }
