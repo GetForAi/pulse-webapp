@@ -1,5 +1,10 @@
 import { appState } from "../state.js";
-import { calculateXP, calculateLevel } from "../utils.js";
+import {
+  calculateXP,
+  calculateLevel,
+  calculateXPProgress,
+  calculateXPMaxForLevel
+} from "../utils.js";
 import { showTaskModal } from "./modals.js";
 
 export async function initAvatarView() {
@@ -15,7 +20,9 @@ export async function initAvatarView() {
 
     appState.xp = calculateXP(steps);
     const level = calculateLevel(appState.xp);
-    const progressPercent = Math.min(100, (appState.xp % 50) * 2);
+    const xpInLevel = calculateXPProgress(appState.xp);
+    const xpMax = calculateXPMaxForLevel(appState.xp);
+    const progressPercent = Math.floor((xpInLevel / xpMax) * 100);
 
     const activeTasks = steps.filter(s => !s.completed);
     const completedTasks = steps.filter(s => s.completed);
@@ -34,7 +41,7 @@ export async function initAvatarView() {
         <div class="avatar-figure">${avatarSymbol}</div>
         <div class="level-xp">
           <div class="level">Уровень ${level}</div>
-          <div class="xp">${appState.xp} XP</div>
+          <div class="xp">${xpInLevel} / ${xpMax} XP</div>
         </div>
         <div class="progress-bar">
           <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
@@ -60,7 +67,7 @@ export async function initAvatarView() {
     };
 
     function reloadView() {
-      initAvatarView(); // обновим интерфейс после проверки
+      initAvatarView(); // обновление интерфейса после награды
     }
 
     document.getElementById("tab-active").addEventListener("click", () => {
@@ -75,7 +82,7 @@ export async function initAvatarView() {
       renderAndBind(completedTasks);
     });
 
-    renderAndBind(activeTasks);
+    renderAndBind(activeTasks); // первичная отрисовка
 
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки данных</p>`;
