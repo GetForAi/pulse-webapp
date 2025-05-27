@@ -5,7 +5,7 @@ import {
   calculateXPMaxForLevel
 } from "../utils.js";
 import { showTaskModal } from "./modals.js";
-import { loadAvatarModel } from "../3d/viewer.js"; // ❌ не добавляй `?v=3` — Vercel сам кеширует правильно
+loadAvatarModel("avatar-3d", appState.level);
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
