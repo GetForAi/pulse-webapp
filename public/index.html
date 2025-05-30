@@ -17,33 +17,23 @@
       touch-action: manipulation;
       margin: 0;
       padding: 0;
-      overflow: hidden; /* 👈 Чтобы не было прокрутки из-за canvas */
     }
   </style>
 
-  <!-- Рабочая версия THREE.js -->
+  <!-- THREE.js + GLTFLoader -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
-
-  <!-- Рабочая UMD-совместимая версия GLTFLoader -->
   <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r153/examples/js/loaders/GLTFLoader.js"></script>
-
-
-  <!-- Глобальная регистрация -->
-  <script>
-    window.THREE = window.THREE || THREE;
-    window.GLTFLoader = window.GLTFLoader || GLTFLoader;
-  </script>
-
-  <!-- viewer.js (должен идти сразу после) -->
-  <script src="/src/3d/viewer.js"></script>
 </head>
 <body>
   <div id="app">
     <main id="content" role="main" aria-live="polite">Загрузка...</main>
   </div>
 
-  <!-- Telegram SDK -->
+  <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- viewer.js — подключается только после загрузки THREE и GLTFLoader -->
+  <script src="/src/3d/viewer.js"></script>
 
   <!-- Основной модуль -->
   <script type="module" src="/src/script.js"></script>
