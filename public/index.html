@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/src/style.css" />
   <link rel="icon" href="/assets/favicon.png" />
 
-  <!-- Убираем отступы и масштабирование -->
+  <!-- Сброс отступов и защита от масштабирования -->
   <style>
     body {
       margin: 0;
@@ -21,9 +21,12 @@
     }
   </style>
 
-  <!-- THREE.js и GLTFLoader (исправленные ссылки) -->
+  <!-- THREE.js и локальный GLTFLoader -->
   <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.153.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="/vendor/GLTFLoader.js"></script>
+
+  <!-- viewer.js (глобальная функция loadAvatarModel) -->
+  <script src="/src/3d/viewer.js"></script>
 </head>
 <body>
   <div id="app">
@@ -33,10 +36,7 @@
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- viewer.js (глобальная функция без import/export) -->
-  <script src="/src/3d/viewer.js"></script>
-
-  <!-- Основной модуль -->
+  <!-- Основной модуль (импортирует avatarView и прочее) -->
   <script type="module" src="/src/script.js"></script>
 </body>
 </html>
