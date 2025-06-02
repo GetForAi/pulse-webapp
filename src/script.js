@@ -1,4 +1,5 @@
 import { initAvatarView } from './views/avatarView.js';
+import { initAchievementsView } from './views/achievementsView.js';
 import { appState } from './state.js';
 import { showModal } from './views/modals.js';
 
@@ -21,24 +22,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Сохраняем Telegram-пользователя в appState
   appState.telegramId = String(user.id);
   appState.firstName = user.first_name || "";
   appState.username = user.username || "";
 
   try {
-    // ⬇️ Добавлено: регистрация пользователя при первом входе
     await fetch("https://prizegift.space/start_user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ telegram_id: appState.telegramId })
     });
 
-    // Загружаем основную вкладку
     await initAvatarView();
     highlightTab('main');
 
-    // Обработчики навигации
     document.querySelectorAll("nav button").forEach(btn => {
       btn.addEventListener("click", async () => {
         const tab = btn.dataset.tab;
@@ -47,6 +44,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         switch (tab) {
           case 'main':
             await initAvatarView();
+            break;
+          case 'achievements':
+            await initAchievementsView();
             break;
           default:
             showModal({
