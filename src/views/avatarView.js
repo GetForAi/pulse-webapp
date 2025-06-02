@@ -48,7 +48,7 @@ export async function initAvatarView() {
           <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
         </div>
 
-        <div id="avatar-3d" style="width: 100%; height: 220px; margin: 15px 0;"></div>
+        <!-- 3D модель отключена временно -->
 
         <div class="task-tabs">
           <button id="tab-active" class="active">Активные</button>
@@ -60,9 +60,6 @@ export async function initAvatarView() {
         </div>
       </div>
     `;
-
-    // 💥 Глобальный вызов (без import)
-    window.loadAvatarModel("avatar-3d", appState.level);
 
     const renderAndBind = (taskArray) => {
       document.getElementById("task-list").innerHTML = renderTasks(taskArray);
