@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="/src/style.css" />
   <link rel="icon" href="/assets/favicon.png" />
 
-  <!-- Сброс отступов и масштабирования -->
   <style>
     body {
       margin: 0;
@@ -20,12 +19,6 @@
       touch-action: manipulation;
     }
   </style>
-
-  <script src="/lib/three.min.js"></script>
-  <script src="/lib/GLTFLoader.js"></script>
-
-  <!-- ✅ viewer.js — глобальная функция без import/export -->
-  <script src="/src/3d/viewer.js"></script>
 </head>
 <body>
   <div id="app">
@@ -35,7 +28,7 @@
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Основной модуль (импортирует avatarView и всё остальное) -->
+  <!-- Основной модуль -->
   <script type="module" src="/src/script.js"></script>
 </body>
 </html>
