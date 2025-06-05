@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Pulse</title>
 
-  <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
@@ -36,7 +35,7 @@
       background: none;
       border: none;
       color: var(--text);
-      font-size: 1.8rem; /* Размер иконок */
+      font-size: 1.5rem;
       cursor: pointer;
       transition: background 0.2s ease, color 0.2s;
     }
@@ -49,6 +48,14 @@
       color: var(--accent-dark);
     }
 
+    .bottom-nav .avatar-icon {
+      font-size: 1.8rem; /* Размер иконки для аватара */
+    }
+
+    .bottom-nav .achievement-icon {
+      font-size: 1.8rem; /* Размер иконки для достижений */
+    }
+
     /* Скрываем старые кнопки вкладок */
     nav {
       display: none;
@@ -58,16 +65,6 @@
 <body>
   <div id="app">
     <main id="content" role="main" aria-live="polite">Загрузка...</main>
-  </div>
-
-  <!-- Модалка для достижения -->
-  <div id="achievement-modal" class="modal-overlay" style="display:none;">
-    <div class="modal-box">
-      <div class="modal-content">
-        <!-- Контент модалки будет вставлен сюда -->
-      </div>
-      <button class="modal-close">Закрыть</button>
-    </div>
   </div>
 
   <!-- Нижняя панель с иконками для вкладок -->
