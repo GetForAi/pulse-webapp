@@ -17,6 +17,49 @@
       padding: 0;
       touch-action: manipulation;
     }
+
+    /* Добавим стили для нижней панели с иконками */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #111;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .bottom-nav button {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s;
+    }
+
+    .bottom-nav button.active {
+      color: var(--accent);
+    }
+
+    .bottom-nav button:hover {
+      color: var(--accent-dark);
+    }
+
+    .bottom-nav .avatar-icon {
+      font-size: 1.8rem; /* Размер иконки для аватара */
+    }
+
+    .bottom-nav .achievement-icon {
+      font-size: 1.8rem; /* Размер иконки для достижений */
+    }
+
+    /* Скрываем старые кнопки вкладок */
+    nav {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -24,10 +67,11 @@
     <main id="content" role="main" aria-live="polite">Загрузка...</main>
   </div>
 
-  <nav>
-    <button data-tab="main">Аватар</button>
-    <button data-tab="achievements">Достижения</button>
-  </nav>
+  <!-- Нижняя панель с иконками для вкладок -->
+  <div class="bottom-nav">
+    <button data-tab="main" class="avatar-icon">👤</button> <!-- Смайлик для аватара -->
+    <button data-tab="achievements" class="achievement-icon">🏆</button> <!-- Смайлик для достижений -->
+  </div>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script type="module" src="/src/script.js"></script>
