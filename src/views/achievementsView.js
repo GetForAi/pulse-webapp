@@ -1,6 +1,4 @@
-// achievementsView.js
-
-// Импортируем функции для открытия модалки и рендеринга достижений из modals.js
+// Импортируем функцию для открытия модалки из modals.js
 import { openAchievementModal, renderAchievements } from './modals.js';
 
 // Функция для рендеринга вкладки с достижениями
