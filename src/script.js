@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const telegram = window.Telegram.WebApp;
   const user = telegram.initDataUnsafe?.user;
 
+  document.addEventListener("DOMContentLoaded", async () => {
+  const telegram = window.Telegram.WebApp;
+  const user = telegram.initDataUnsafe?.user;
+
   // Проверка авторизации пользователя в Telegram
   if (!user?.id) {
     renderContent("<p style='color:red;'>Ошибка Telegram авторизации</p>");
@@ -38,13 +42,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // Отправляем запрос на сервер для инициализации пользователя
-    await fetch("https://prizegift.space/start_user", {
+    const response = await fetch("https://prizegift.space/start_user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ telegram_id: appState.telegramId })
     });
 
-    // Инициализируем вкладку "Аватар"
+    // Проверяем, успешно ли прошел запрос
+    if (!response.ok) {
+      throw new Error(`Ошибка загрузки: ${response.status}`);
+    }
+
     await initAvatarView();
     highlightTab('main');  // Инициализация вкладки "Аватар"
 
@@ -57,15 +65,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Логика для переключения вкладок
         switch (tab) {
           case 'main':
-            // Инициализация вкладки "Аватар"
             await initAvatarView();
             break;
           case 'achievements':
-            // Инициализация вкладки "Достижения"
             await initAchievementsView();
             break;
           default:
-            // Если вкладка не существует, показываем уведомление о разработке
             showModal({
               title: "⏳ В разработке",
               message: `Раздел "${tab}" скоро появится`,
@@ -77,6 +82,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   } catch (error) {
     console.error("❌ Ошибка загрузки:", error);
-    renderContent("<p style='color:red;'>Ошибка загрузки данных. Попробуйте позже</p>");
+    renderContent(`<p style='color:red;'>Ошибка загрузки данных. ${error.message}</p>`);
   }
 });
