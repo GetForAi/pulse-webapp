@@ -1,5 +1,5 @@
 import { initAvatarView } from './views/avatarView.js';
-import { initAchievementsView } from './views/achievementsView.js';
+import { initAchievementsView } from './views/achievementsView.js'; // Добавляем импорт функции
 import { appState } from './state.js';
 import { showModal } from './views/modals.js';
 
