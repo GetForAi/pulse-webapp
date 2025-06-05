@@ -25,11 +25,11 @@ export function openAchievementModal(id) {
   if (!achievement) return; // Если достижение не найдено, выходим
 
   const modalContent = document.querySelector('.modal-content');
-  modalContent.innerHTML = 
+  modalContent.innerHTML = `
     <h2>${achievement.name}</h2>
     <p>${achievement.description}</p>
     <p>Награда: ${achievement.reward}</p>
-  ;
+  `;
   document.getElementById('achievement-modal').style.display = 'block';
 }
 
@@ -41,24 +41,24 @@ export function showTaskModal(task, reloadCallback) {
   modal.className = "modal-overlay";
 
   const channelUsername = task_meta?.channel_username || "pulse_channel";
-  const channelLink = https://t.me/${channelUsername};
+  const channelLink = `https://t.me/${channelUsername}`;
 
-  modal.innerHTML = 
+  modal.innerHTML = `
     <div class="modal-box">
       <h3>${title}</h3>
       <p>${description || "Описание недоступно"}</p>
       <p class="modal-reward">+${xp || 0} XP, +${coins || 0} монет</p>
 
-      ${type === "subscribe" && !completed ? 
+      ${type === "subscribe" && !completed ? `
         <div style="margin-top: 10px;">
           <a href="${channelLink}" target="_blank" class="subscribe-btn">Перейти на канал</a>
           <button class="modal-check" id="check-subscribe">Проверить</button>
         </div>
-       : ""}
+      ` : ""}
 
       <button class="modal-close" id="close-task-modal">Закрыть</button>
     </div>
-  ;
+  `;
 
   document.body.appendChild(modal);
   document.getElementById("app").classList.add("blurred");
@@ -100,7 +100,7 @@ export function showTaskModal(task, reloadCallback) {
 
           showModal({
             title: "🎉 Готово!",
-            message: Вы подписались и получили ${xp} XP и ${coins} монет.\n\nТеперь у вас ${newXP} XP и уровень ${newLevel}.,
+            message: `Вы подписались и получили ${xp} XP и ${coins} монет.\n\nТеперь у вас ${newXP} XP и уровень ${newLevel}.`,
             icon: "✅"
           });
 
@@ -144,7 +144,7 @@ export function renderAchievements() {
     if (achievement.completed) {
       div.classList.add('completed');
     }
-    div.id = achievement-${achievement.id};
+    div.id = `achievement-${achievement.id}`;
     div.onclick = () => openAchievementModal(achievement.id);
 
     const img = document.createElement('img');
@@ -167,14 +167,14 @@ export function showModal({ title, message, icon = "" }) {
 
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
-  modal.innerHTML = 
+  modal.innerHTML = `
     <div class="modal-box">
-      ${icon ? <div class="modal-icon">${icon}</div> : ""}
+      ${icon ? `<div class="modal-icon">${icon}</div>` : ""}
       <h3>${title}</h3>
       <p>${message}</p>
       <button class="modal-close">Ок</button>
     </div>
-  ;
+  `;
   document.body.appendChild(modal);
   document.getElementById("app").classList.add("blurred");
 
