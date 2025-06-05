@@ -1,33 +1,25 @@
-// src/views/achievementsView.js
-export async function initAchievementsView() {
-  const container = document.getElementById("content");
-  container.innerHTML = `<p>Загрузка достижений...</p>`;
+// achievementsView.js
 
-  try {
-    const res = await fetch(`https://prizegift.space/get_achievements`);
-    if (!res.ok) throw new Error("Ошибка получения достижений");
+import { openAchievementModal, renderAchievements } from './modals.js';
 
-    const data = await res.json(); // массив достижений
-    container.innerHTML = `
-      <div class="achievements-grid">
-        ${data.map(ach => `
-          <div class="achievement-tile" data-ach='${JSON.stringify(ach)}'>
-            <img src="${ach.icon}" alt="${ach.title}" />
-            <div class="title">${ach.title}</div>
-          </div>
-        `).join("")}
-      </div>
-    `;
+export function renderAchievementsView() {
+  const content = document.getElementById('content');
+  content.innerHTML = `
+    <div id="achievements-view">
+      <h2>Достижения</h2>
+      <div class="achievements-grid"></div>
+    </div>
+  `;
 
-    document.querySelectorAll(".achievement-tile").forEach(tile => {
-      const ach = JSON.parse(tile.dataset.ach);
-      tile.addEventListener("click", () => {
-        alert(`${ach.title}\n\n${ach.description}\n+${ach.xp} XP, +${ach.coins} монет`);
-      });
-    });
+  renderAchievements();
+}
 
-  } catch (err) {
-    console.error("Ошибка загрузки ачивок:", err);
-    container.innerHTML = `<p style='color:red;'>Ошибка загрузки ачивок</p>`;
+export function updateAchievementState(id, completed) {
+  const achievement = document.getElementById(`achievement-${id}`);
+  if (completed) {
+    achievement.classList.add('completed');
+  } else {
+    achievement.classList.remove('completed');
   }
 }
+
