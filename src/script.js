@@ -25,10 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const telegram = window.Telegram.WebApp;
   const user = telegram.initDataUnsafe?.user;
 
-  document.addEventListener("DOMContentLoaded", async () => {
-  const telegram = window.Telegram.WebApp;
-  const user = telegram.initDataUnsafe?.user;
-
   // Проверка авторизации пользователя в Telegram
   if (!user?.id) {
     renderContent("<p style='color:red;'>Ошибка Telegram авторизации</p>");
@@ -48,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       body: JSON.stringify({ telegram_id: appState.telegramId })
     });
 
-    // Проверяем, успешно ли прошел запрос
+    // Проверка на успешный ответ от сервера
     if (!response.ok) {
       throw new Error(`Ошибка загрузки: ${response.status}`);
     }
