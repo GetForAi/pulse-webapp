@@ -46,7 +46,113 @@ body {
   overflow-y: auto;
 }
 
-/* Стили для нижней панели с иконками */
+/* Avatar Section Styles */
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.level-xp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.level {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--level);
+}
+
+.xp {
+  font-size: 0.9rem;
+  color: var(--xp);
+}
+
+.progress-bar {
+  height: 8px;
+  width: 100%;
+  background: #222;
+  border-radius: 6px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  width: 0%;
+  transition: width 0.4s ease-in-out;
+}
+
+/* Task Tabs */
+.task-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.task-tabs button {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s;
+}
+
+.task-tabs button.active {
+  background: var(--accent);
+  color: #000;
+  font-weight: 600;
+}
+
+/* Task List */
+.task-list {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.task-item {
+  padding: 14px 16px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.task-item.done {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,255,224,0.15);
+}
+
+.task-title {
+  font-weight: 600;
+}
+
+.task-desc {
+  font-size: 0.85rem;
+  margin-top: 6px;
+  color: #aaa;
+}
+
+/* ✅ Нижняя панель с иконками */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
@@ -63,7 +169,7 @@ body {
   background: none;
   border: none;
   color: var(--text);
-  font-size: 1.8rem; /* Размер иконок */
+  font-size: 2rem; /* Размер иконок */
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s;
 }
@@ -76,12 +182,11 @@ body {
   color: var(--accent-dark); /* Цвет при наведении */
 }
 
-/* Скрываем старую панель вкладок */
 nav {
   display: none;
 }
 
-/* Стиль для достижения */
+/* ✅ Стиль для достижений */
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
