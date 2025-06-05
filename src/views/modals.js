@@ -30,7 +30,7 @@ export function openAchievementModal(id) {
     <p>${achievement.description}</p>
     <p>Награда: ${achievement.reward}</p>
   `;
-  document.getElementById('achievement-modal').style.display = 'block';
+  document.getElementById('achievement-modal').style.display = 'block'; // Показываем модалку
 }
 
 // Экспортируем функцию для показа модалки задания
@@ -135,7 +135,7 @@ export function showTaskModal(task, reloadCallback) {
   }
 }
 
-// Экспортируем функцию для рендеринга достижений
+// Функция для рендеринга достижений
 export function renderAchievements() {
   const achievementGrid = document.querySelector('.achievements-grid');
   achievements.forEach(achievement => {
@@ -145,7 +145,7 @@ export function renderAchievements() {
       div.classList.add('completed');
     }
     div.id = `achievement-${achievement.id}`;
-    div.onclick = () => openAchievementModal(achievement.id);
+    div.onclick = () => openAchievementModal(achievement.id); // Добавляем обработчик для открытия модалки
 
     const img = document.createElement('img');
     img.src = achievement.icon; // Используем путь к изображению
