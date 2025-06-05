@@ -31,6 +31,11 @@ export function openAchievementModal(id) {
     <p>Награда: ${achievement.reward}</p>
   `;
   document.getElementById('achievement-modal').style.display = 'block'; // Показываем модалку
+
+  // Обработчик для кнопки закрытия
+  document.querySelector('.modal-close').onclick = () => {
+    document.getElementById('achievement-modal').style.display = 'none'; // Скрываем модалку
+  };
 }
 
 // Экспортируем функцию для показа модалки задания
