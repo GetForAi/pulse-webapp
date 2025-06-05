@@ -28,8 +28,8 @@ export function showModal({ title, message, icon = "" }) {
 
 /**
  * Модалка для задания с кнопками перехода и проверки
- * @param {Object} task
- * @param {Function} reloadCallback — функция перезагрузки интерфейса
+ * @param {Object} task - Задание для отображения
+ * @param {Function} reloadCallback - Функция перезагрузки интерфейса после выполнения действия
  */
 export function showTaskModal(task, reloadCallback) {
   const { title, description, xp, coins, task_meta, step_number, type, completed } = task;
@@ -37,9 +37,11 @@ export function showTaskModal(task, reloadCallback) {
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
 
+  // Вытаскиваем информацию о канале для подписки
   const channelUsername = task_meta?.channel_username || "pulse_channel";
   const channelLink = `https://t.me/${channelUsername}`;
 
+  // Формируем содержимое модалки
   modal.innerHTML = `
     <div class="modal-box">
       <h3>${title}</h3>
@@ -57,14 +59,17 @@ export function showTaskModal(task, reloadCallback) {
     </div>
   `;
 
+  // Добавляем модалку на страницу
   document.body.appendChild(modal);
   document.getElementById("app").classList.add("blurred");
 
+  // Обработчик закрытия модалки
   document.getElementById("close-task-modal").onclick = () => {
     modal.remove();
     document.getElementById("app").classList.remove("blurred");
   };
 
+  // Обработчик для кнопки "Проверить" при задании типа подписки
   const checkBtn = document.getElementById("check-subscribe");
   if (checkBtn) {
     checkBtn.onclick = async () => {
@@ -72,6 +77,7 @@ export function showTaskModal(task, reloadCallback) {
       checkBtn.textContent = "Проверка...";
 
       try {
+        // Проверяем подписку на канал
         const res = await fetch("https://prizegift.space/check_subscription", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -83,6 +89,7 @@ export function showTaskModal(task, reloadCallback) {
 
         const data = await res.json();
         if (data.subscribed) {
+          // Если подписка выполнена, обновляем шаг
           const updateRes = await fetch("https://prizegift.space/update_step", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -95,20 +102,24 @@ export function showTaskModal(task, reloadCallback) {
           const updated = await updateRes.json();
           const { xp: newXP, coins: newCoins, level: newLevel } = updated;
 
+          // Показываем успешное сообщение
           showModal({
             title: "🎉 Готово!",
             message: `Вы подписались и получили ${xp} XP и ${coins} монет.\n\nТеперь у вас ${newXP} XP и уровень ${newLevel}.`,
             icon: "✅"
           });
 
+          // Закрываем модалку
           modal.remove();
           document.getElementById("app").classList.remove("blurred");
 
+          // Перезагружаем интерфейс
           if (typeof reloadCallback === "function") {
             setTimeout(reloadCallback, 800);
           }
 
         } else {
+          // Если подписка не найдена, показываем ошибку
           showModal({
             title: "Не найдено подписки",
             message: "Вы ещё не подписались на канал или Telegram не успел обновить данные.",
@@ -120,6 +131,7 @@ export function showTaskModal(task, reloadCallback) {
 
       } catch (err) {
         console.error(err);
+        // В случае ошибки показываем сообщение
         showModal({
           title: "Ошибка проверки",
           message: "Не удалось проверить подписку. Попробуйте позже.",
