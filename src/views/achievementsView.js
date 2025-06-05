@@ -1,3 +1,4 @@
+// Импортируем функции для открытия модалки и рендеринга достижений из modals.js
 import { openAchievementModal, renderAchievements } from './modals.js';
 
 // Функция для рендеринга вкладки с достижениями
@@ -11,9 +12,11 @@ export function renderAchievementsView() {
     </div>
   `;
 
-  renderAchievements();  // Вызовем функцию для отображения достижений
+  // Рендерим достижения с помощью функции renderAchievements
+  renderAchievements();
 }
 
+// Функция для обновления состояния достижения (выполнено или нет)
 export function updateAchievementState(id, completed) {
   const achievement = document.getElementById(`achievement-${id}`);
   if (completed) {
