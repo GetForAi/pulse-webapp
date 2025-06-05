@@ -1,5 +1,5 @@
 import { initAvatarView } from './views/avatarView.js';
-import { initAchievementsView } from './views/achievementsView.js'; // Добавляем импорт функции
+import { initAchievementsView } from './views/achievementsView.js'; // Импортируем функцию для вкладки "Достижения"
 import { appState } from './state.js';
 import { showModal } from './views/modals.js';
 
@@ -49,21 +49,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       throw new Error(`Ошибка загрузки: ${response.status}`);
     }
 
-    await initAvatarView();
+    await initAvatarView(); // Инициализация вкладки "Аватар"
     highlightTab('main');  // Инициализация вкладки "Аватар"
 
     // Обработчики для переключения между вкладками
-    document.querySelectorAll("nav button").forEach(btn => {
+    document.querySelectorAll(".bottom-nav button").forEach(btn => {
       btn.addEventListener("click", async () => {
         const tab = btn.dataset.tab;
         highlightTab(tab);
 
         // Логика для переключения вкладок
         switch (tab) {
-          case 'main':
+          case 'main': // Вкладка "Аватар"
             await initAvatarView();
             break;
-          case 'achievements':
+          case 'achievements': // Вкладка "Достижения"
             await initAchievementsView();
             break;
           default:
