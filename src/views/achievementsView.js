@@ -24,3 +24,8 @@ export function updateAchievementState(id, completed) {
     achievement.classList.remove('completed');
   }
 }
+
+// Экспортируем функцию инициализации достижений
+export function initAchievementsView() {
+  renderAchievementsView(); // Вызываем функцию для рендеринга достижений
+}
