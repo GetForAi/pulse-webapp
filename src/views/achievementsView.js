@@ -12,8 +12,7 @@ export function renderAchievementsView() {
     </div>
   `;
 
-  // Рендерим достижения с помощью функции renderAchievements
-  renderAchievements();
+  renderAchievements(); // Вызовем функцию для отображения достижений
 }
 
 // Функция для обновления состояния достижения (выполнено или нет)
