@@ -1,83 +1,88 @@
-import { initAvatarView } from './views/avatarView.js';
-import { initAchievementsView } from './views/achievementsView.js'; // Импортируем функцию для вкладки "Достижения"
-import { appState } from './state.js';
-import { showModal } from './views/modals.js';
+// Пример массива достижений
+const achievements = [
+  {
+    id: 1,
+    name: 'Первое достижение',
+    description: 'Описание первого достижения',
+    reward: '10 XP, 5 монет',
+    completed: false,
+    icon: 'path_to_icon_1'  // Путь к изображению для достижения
+  },
+  {
+    id: 2,
+    name: 'Второе достижение',
+    description: 'Описание второго достижения',
+    reward: '20 XP, 10 монет',
+    completed: true,
+    icon: 'path_to_icon_2'
+  },
+  // Добавь другие достижения по аналогии
+];
 
-/**
- * Функция для рендеринга содержимого вкладки
- * @param {string} html - HTML код для рендеринга
- */
-function renderContent(html) {
-  document.getElementById("content").innerHTML = html;
+// Экспортируем функцию для открытия модалки достижения
+export function openAchievementModal(id) {
+  const achievement = achievements.find(a => a.id === id); // Ищем достижение по id
+  if (!achievement) return; // Если достижение не найдено, выходим
+
+  const modalContent = document.querySelector('.modal-content');
+  modalContent.innerHTML = `
+    <h2>${achievement.name}</h2>
+    <p>${achievement.description}</p>
+    <p>Награда: ${achievement.reward}</p>
+  `;
+  document.getElementById('achievement-modal').style.display = 'block'; // Показываем модалку
+
+  // Обработчик для кнопки закрытия
+  document.querySelector('.modal-close').onclick = () => {
+    document.getElementById('achievement-modal').style.display = 'none'; // Скрываем модалку
+  };
 }
 
-/**
- * Функция для выделения активной вкладки в навигации
- * @param {string} activeTab - имя активной вкладки
- */
-function highlightTab(activeTab) {
-  document.querySelectorAll("nav button").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.tab === activeTab);
+// Универсальная модалка (ошибки, уведомления и т.д.)
+export function showModal({ title, message, icon = "" }) {
+  const existing = document.querySelector(".modal-overlay");
+  if (existing) existing.remove(); // Убираем старую модалку, если она есть
+
+  const modal = document.createElement("div");
+  modal.className = "modal-overlay";
+  modal.innerHTML = `
+    <div class="modal-box">
+      ${icon ? `<div class="modal-icon">${icon}</div>` : ""}
+      <h3>${title}</h3>
+      <p>${message}</p>
+      <button class="modal-close">Ок</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  document.getElementById("app").classList.add("blurred");
+
+  modal.querySelector(".modal-close").onclick = () => {
+    modal.remove();
+    document.getElementById("app").classList.remove("blurred");
+  };
+}
+
+// Функция для рендеринга достижений
+export function renderAchievements() {
+  const achievementGrid = document.querySelector('.achievements-grid');
+  achievements.forEach(achievement => {
+    const div = document.createElement('div');
+    div.classList.add('achievement-tile');
+    if (achievement.completed) {
+      div.classList.add('completed');
+    }
+    div.id = `achievement-${achievement.id}`;
+    div.onclick = () => openAchievementModal(achievement.id); // Добавляем обработчик для открытия модалки
+
+    const img = document.createElement('img');
+    img.src = achievement.icon; // Используем путь к изображению
+    div.appendChild(img);
+
+    const title = document.createElement('div');
+    title.classList.add('title');
+    title.innerText = achievement.name;
+    div.appendChild(title);
+
+    achievementGrid.appendChild(div);
   });
 }
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const telegram = window.Telegram.WebApp;
-  const user = telegram.initDataUnsafe?.user;
-
-  // Проверка авторизации пользователя в Telegram
-  if (!user?.id) {
-    renderContent("<p style='color:red;'>Ошибка Telegram авторизации</p>");
-    return;
-  }
-
-  // Сохранение данных пользователя в appState
-  appState.telegramId = String(user.id);
-  appState.firstName = user.first_name || "";
-  appState.username = user.username || "";
-
-  try {
-    // Отправляем запрос на сервер для инициализации пользователя
-    const response = await fetch("https://prizegift.space/start_user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ telegram_id: appState.telegramId })
-    });
-
-    // Проверка на успешный ответ от сервера
-    if (!response.ok) {
-      throw new Error(`Ошибка загрузки: ${response.status}`);
-    }
-
-    await initAvatarView(); // Инициализация вкладки "Аватар"
-    highlightTab('main');  // Инициализация вкладки "Аватар"
-
-    // Обработчики для переключения между вкладками
-    document.querySelectorAll(".bottom-nav button").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const tab = btn.dataset.tab;
-        highlightTab(tab);
-
-        // Логика для переключения вкладок
-        switch (tab) {
-          case 'main': // Вкладка "Аватар"
-            await initAvatarView();
-            break;
-          case 'achievements': // Вкладка "Достижения"
-            await initAchievementsView();
-            break;
-          default:
-            showModal({
-              title: "⏳ В разработке",
-              message: `Раздел "${tab}" скоро появится`,
-              icon: "🛠"
-            });
-        }
-      });
-    });
-
-  } catch (error) {
-    console.error("❌ Ошибка загрузки:", error);
-    renderContent(`<p style='color:red;'>Ошибка загрузки данных. ${error.message}</p>`);
-  }
-});
