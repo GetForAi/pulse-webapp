@@ -22,13 +22,22 @@
 </head>
 <body>
   <div id="app">
+    <!-- Контейнер для содержимого вкладок -->
     <main id="content" role="main" aria-live="polite">Загрузка...</main>
   </div>
+
+  <!-- Нижняя панель навигации (например, для переключения вкладок) -->
+  <nav>
+    <button data-tab="main">Аватар</button>
+    <button data-tab="achievements">Достижения</button>
+  </nav>
 
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <!-- Основной модуль -->
   <script type="module" src="/src/script.js"></script>
+  <!-- Подключение скрипта для вкладки достижений -->
+  <script type="module" src="/src/views/achievementsView.js"></script>
 </body>
 </html>
