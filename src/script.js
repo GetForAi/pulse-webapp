@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Инициализируем вкладку "Аватар"
     await initAvatarView();
-    highlightTab('main');
+    highlightTab('main');  // Инициализация вкладки "Аватар"
 
     // Обработчики для переключения между вкладками
     document.querySelectorAll("nav button").forEach(btn => {
