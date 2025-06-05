@@ -181,6 +181,7 @@ body {
 }
 
 /* ✅ Ачивки */
+
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -198,9 +199,8 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.achievement-tile:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,255,224,0.15);
+.achievement-tile.completed {
+  opacity: 1;
 }
 
 .achievement-tile img {
@@ -214,6 +214,10 @@ body {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text);
+}
+
+.achievement-tile.completed .title {
+  color: var(--level); /* Или другой цвет для выполненных */
 }
 
 /* ====== MODAL STYLES ====== */
