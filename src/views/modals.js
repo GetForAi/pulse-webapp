@@ -28,7 +28,7 @@ export function openAchievementModal(id) {
   modalContent.innerHTML = `
     <h2>${achievement.name}</h2>
     <p>${achievement.description}</p>
-    <p>Награда: ${achievement.reward}</p>
+    <p class="modal-reward">Награда: ${achievement.reward}</p>
   `;
   document.getElementById('achievement-modal').style.display = 'block'; // Показываем модалку
 
