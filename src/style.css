@@ -46,6 +46,7 @@ body {
   overflow-y: auto;
 }
 
+/* Avatar Section Styles */
 .avatar-container {
   display: flex;
   flex-direction: column;
@@ -88,6 +89,7 @@ body {
   transition: width 0.4s ease-in-out;
 }
 
+/* Task Tabs */
 .task-tabs {
   display: flex;
   justify-content: center;
@@ -111,6 +113,7 @@ body {
   font-weight: 600;
 }
 
+/* Task List */
 .task-list {
   margin-top: 16px;
   width: 100%;
@@ -149,7 +152,7 @@ body {
   color: #aaa;
 }
 
-/* ✅ Новая нижняя панель с иконками */
+/* ✅ Нижняя панель с иконками */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
@@ -180,8 +183,7 @@ body {
   height: 28px;
 }
 
-/* ✅ Ачивки */
-
+/* ✅ Стиль для достижений */
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -217,11 +219,10 @@ body {
 }
 
 .achievement-tile.completed .title {
-  color: var(--level); /* Или другой цвет для выполненных */
+  color: var(--level); /* Цвет для выполненных достижений */
 }
 
 /* ====== MODAL STYLES ====== */
-
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
