@@ -3,6 +3,8 @@ import { initAchievementsView } from './views/achievementsView.js'; // Импо�
 import { appState } from './state.js';
 import { showModal } from './views/modals.js';
 
+console.log("✅ script.js загружен");
+
 /**
  * Функция для рендеринга содержимого вкладки
  * @param {string} html - HTML код для рендеринга
