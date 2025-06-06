@@ -1,8 +1,7 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/public/index.html" }
+    { "source": "/src/(.*)", "destination": "/src/$1" }
   ],
-  "static": {
-    "public": "public"
-  }
+  "cleanUrls": true,
+  "trailingSlash": false
 }
