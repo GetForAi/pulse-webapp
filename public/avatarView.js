@@ -1,4 +1,4 @@
-import { appState } from "../state.js";
+import { appState } from "./state.js";
 import {
   calculateXPProgress,
   calculateXPMaxForLevel
