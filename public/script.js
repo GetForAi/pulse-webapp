@@ -1,7 +1,7 @@
-import { initAvatarView } from './views/avatarView.js';
-import { initAchievementsView } from './views/achievementsView.js'; // Импортируем функцию для вкладки "Достижения"
+import { initAvatarView } from './avatarView.js';
+import { initAchievementsView } from './achievementsView.js'; // Импортируем функцию для вкладки "Достижения"
 import { appState } from './state.js';
-import { showModal } from './views/modals.js';
+import { showModal } from './modals.js';
 
 console.log("✅ script.js загружен");
 
