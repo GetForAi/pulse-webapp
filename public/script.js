@@ -18,7 +18,7 @@ function renderContent(html) {
  * @param {string} activeTab - имя активной вкладки
  */
 function highlightTab(activeTab) {
-  document.querySelectorAll("nav button").forEach(btn => {
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.tab === activeTab);
   });
 }
