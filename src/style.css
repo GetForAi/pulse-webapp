@@ -17,17 +17,8 @@ body {
   padding: 0;
   background-color: var(--bg);
   color: var(--text);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
   transition: background 0.3s ease, color 0.3s ease;
-}
-
-#app.blurred {
-  filter: blur(5px);
-  pointer-events: none;
-  user-select: none;
 }
 
 #app {
@@ -40,119 +31,19 @@ body {
   box-shadow: var(--shadow);
 }
 
+#app.blurred {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
 #content {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
 }
 
-/* Avatar Section Styles */
-.avatar-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.level-xp {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-.level {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--level);
-}
-
-.xp {
-  font-size: 0.9rem;
-  color: var(--xp);
-}
-
-.progress-bar {
-  height: 8px;
-  width: 100%;
-  background: #222;
-  border-radius: 6px;
-  margin-top: 6px;
-  overflow: hidden;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
-  width: 0%;
-  transition: width 0.4s ease-in-out;
-}
-
-/* Task Tabs */
-.task-tabs {
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-  gap: 12px;
-}
-
-.task-tabs button {
-  background: none;
-  border: 1px solid var(--accent);
-  color: var(--text);
-  padding: 6px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s;
-}
-
-.task-tabs button.active {
-  background: var(--accent);
-  color: #000;
-  font-weight: 600;
-}
-
-/* Task List */
-.task-list {
-  margin-top: 16px;
-  width: 100%;
-}
-
-.task-item {
-  padding: 14px 16px;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  margin-bottom: 10px;
-  font-size: 0.95rem;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  transition: all 0.25s ease;
-  position: relative;
-}
-
-.task-item.done {
-  opacity: 0.4;
-  text-decoration: line-through;
-}
-
-.task-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,255,224,0.15);
-}
-
-.task-title {
-  font-weight: 600;
-}
-
-.task-desc {
-  font-size: 0.85rem;
-  margin-top: 6px;
-  color: #aaa;
-}
-
-/* ✅ Нижняя панель с иконками */
+/* Нижняя панель с иконками */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
@@ -169,161 +60,34 @@ body {
   background: none;
   border: none;
   color: var(--text);
-  font-size: 2rem; /* Размер иконок */
+  font-size: 2rem;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s;
 }
 
 .bottom-nav button.active {
-  color: var(--accent); /* Цвет при активной вкладке */
+  color: var(--accent);
 }
 
 .bottom-nav button:hover {
-  color: var(--accent-dark); /* Цвет при наведении */
+  color: var(--accent-dark);
 }
 
 nav {
   display: none;
 }
 
-/* ✅ Стиль для достижений */
-.achievements-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  padding: 10px 0;
-}
-
-.achievement-tile {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.achievement-tile.completed {
-  opacity: 1;
-}
-
-.achievement-tile img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 8px;
-}
-
-.achievement-tile .title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.achievement-tile.completed .title {
-  color: var(--level); /* Цвет для выполненных достижений */
-}
-
-/* ====== MODAL STYLES ====== */
+/* Глобальные модалки — только базовый контейнер, остальное в modal.css */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   animation: fadeIn 0.2s ease;
-}
-
-.modal-box {
-  background-color: #181b25;
-  border-radius: 16px;
-  padding: 24px 20px;
-  max-width: 340px;
-  width: 90%;
-  box-shadow: 0 0 20px rgba(0, 255, 224, 0.2);
-  text-align: center;
-  animation: pop 0.25s ease;
-  color: var(--text);
-}
-
-.modal-box h3 {
-  margin: 0 0 10px;
-  font-size: 1.2rem;
-  color: var(--accent);
-}
-
-.modal-box p {
-  margin: 6px 0;
-  font-size: 0.95rem;
-  color: #ccc;
-}
-
-.modal-box .modal-reward {
-  font-weight: 600;
-  color: var(--xp);  /* Изменено на красный цвет для награды */
-  font-size: 0.95rem;
-}
-
-.modal-icon {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-.modal-close,
-.modal-check,
-.subscribe-btn {
-  margin-top: 12px;
-  display: inline-block;
-  padding: 8px 16px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.modal-close {
-  background: var(--accent);
-  color: #000;
-  border: none;
-}
-
-.modal-close:hover {
-  background: var(--accent-dark);
-}
-
-.modal-check {
-  background: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  margin-left: 10px;
-}
-
-.modal-check:hover {
-  background: var(--accent);
-  color: #000;
-}
-
-.subscribe-btn {
-  background: var(--accent-dark);
-  color: #000;
-  text-align: center;
-}
-
-.subscribe-btn:hover {
-  background: var(--accent);
-  color: #000;
-}
-
-@keyframes pop {
-  from { transform: scale(0.9); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
 }
 
 @keyframes fadeIn {
