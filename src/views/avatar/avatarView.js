@@ -1,9 +1,9 @@
-import { appState } from "./state.js";
+import { appState } from "../../utils/state.js";
 import {
   calculateXPProgress,
   calculateXPMaxForLevel
-} from "../utils.js";
-import { showTaskModal } from "./modals.js";
+} from "../../utils/helpers.js";
+import { showTaskModal } from "../tasks/tasksModal.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
@@ -47,14 +47,10 @@ export async function initAvatarView() {
         <div class="progress-bar">
           <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
         </div>
-
-        <!-- 3D модель отключена временно -->
-
         <div class="task-tabs">
           <button id="tab-active" class="active">Активные</button>
           <button id="tab-completed">Завершённые</button>
         </div>
-
         <div class="task-list" id="task-list">
           ${renderTasks(activeTasks)}
         </div>
