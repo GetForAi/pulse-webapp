@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="/assets/favicon.png" />
 
   <style>
@@ -19,7 +19,6 @@
       touch-action: manipulation;
     }
 
-    /* Добавим стили для нижней панели с иконками */
     .bottom-nav {
       display: flex;
       justify-content: space-around;
@@ -50,17 +49,12 @@
     }
 
     .bottom-nav .avatar-icon {
-      font-size: 1.8rem; /* Размер иконки для аватара */
+      font-size: 1.8rem;
     }
-
     .bottom-nav .achievement-icon {
-      font-size: 1.8rem; /* Размер иконки для достижений */
+      font-size: 1.8rem;
     }
-
-    /* Скрываем старые кнопки вкладок */
-    nav {
-      display: none;
-    }
+    nav { display: none; }
   </style>
 </head>
 <body>
@@ -71,21 +65,20 @@
   <!-- Модалка для достижения -->
   <div id="achievement-modal" class="modal-overlay" style="display:none;">
     <div class="modal-box">
-      <div class="modal-content">
-        <!-- Контент модалки будет вставлен сюда -->
-      </div>
+      <div class="modal-content"></div>
       <button class="modal-close">Закрыть</button>
     </div>
   </div>
 
   <!-- Нижняя панель с иконками для вкладок -->
   <div class="bottom-nav">
-    <button data-tab="main" class="avatar-icon">👤</button> <!-- Смайлик для аватара -->
-    <button data-tab="achievements" class="achievement-icon">🏆</button> <!-- Смайлик для достижений -->
+    <button data-tab="main" class="avatar-icon">👤</button>
+    <button data-tab="achievements" class="achievement-icon">🏆</button>
   </div>
 
+  <!-- Telegram WebApp JS SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script type="module" src="/src/script.js"></script>
-  <script type="module" src="/src/achievementsView.js"></script>
+  <!-- Главный js. Все остальные view/js модули импортируются через него! -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
