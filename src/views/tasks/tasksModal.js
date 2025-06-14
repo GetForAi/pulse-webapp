@@ -1,5 +1,5 @@
-import { appState } from '../../utils/state.js';
-import { showModal } from '../../components/modal.js';
+import { appState } from './state.js';
+import { showModal } from './modal.js';
 
 // Основная модалка для задания (шагов)
 export function showTaskModal(task, reloadCallback) {
