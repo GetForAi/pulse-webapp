@@ -1,5 +1,5 @@
 import { showModal } from './modal.js';
-
+// кое что проверяю
 // Массив достижений (в будущем из БД)
 export const achievements = [
   {
