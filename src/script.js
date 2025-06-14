@@ -1,7 +1,7 @@
-import { initAvatarView } from './views/avatar/avatarView.js';
-import { initAchievementsView } from './views/achievements/achievementsView.js';
-// import { initTasksView } from './views/tasks/tasksView.js'; // если появится вкладка "Задания"
-// import { initSettingsView } from './views/settings/settingsView.js'; // если появится вкладка "Настройки"
+import { initAvatarView } from './avatarView.js';
+import { initAchievementsView } from './achievementsView.js';
+// import { initTasksView } from './tasksView.js';
+// import { initSettingsView } from './settingsView.js';
 
 // Карта вкладок
 const views = {
@@ -13,7 +13,7 @@ const views = {
 
 document.addEventListener("DOMContentLoaded", async () => {
   // По умолчанию запускаем первую вкладку
-  views.main();
+  if (views.main) await views.main();
 
   // Переключатель вкладок
   document.querySelectorAll(".bottom-nav button").forEach(btn => {
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (views[tab]) {
         await views[tab]();
       } else {
-        // Можно показать "В разработке"
         document.getElementById('content').innerHTML = `<p>Раздел "${tab}" в разработке</p>`;
       }
     });
