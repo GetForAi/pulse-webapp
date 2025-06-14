@@ -1,4 +1,4 @@
-import { showModal } from '../../components/modal.js';
+import { showModal } from './components/modal.js';
 
 // Массив достижений (в будущем из БД)
 export const achievements = [
