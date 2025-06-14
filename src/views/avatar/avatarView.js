@@ -1,9 +1,9 @@
-import { appState } from "../../utils/state.js";
+import { appState } from "./state.js";
 import {
   calculateXPProgress,
   calculateXPMaxForLevel
-} from "../../utils/helpers.js";
-import { showTaskModal } from "../tasks/tasksModal.js";
+} from "./helpers.js";
+import { showTaskModal } from "./tasksModal.js";
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
