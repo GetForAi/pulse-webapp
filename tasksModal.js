@@ -42,7 +42,7 @@ export function showTaskModal(task, reloadCallback) {
       checkBtn.textContent = "Проверка...";
 
       try {
-        const res = await fetch("https://prizegift.space/check_subscription", {
+        const res = await fetch("https://prizegift.space/api/check_subscription", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -53,7 +53,7 @@ export function showTaskModal(task, reloadCallback) {
 
         const data = await res.json();
         if (data.subscribed) {
-          const updateRes = await fetch("https://prizegift.space/update_step", {
+          const updateRes = await fetch("https://prizegift.space/api/update_step", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
