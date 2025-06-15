@@ -21,7 +21,7 @@ export async function initAvatarView() {
   }
 
   // Проверяем корректность формируемого URL
-  const fetchUrl = `https://prizegift.space/get_progress/${appState.telegramId}`;
+  const fetchUrl = `https://prizegift.space/api/get_progress/${appState.telegramId}`;
   console.log("URL запроса к серверу:", fetchUrl);
 
   try {
