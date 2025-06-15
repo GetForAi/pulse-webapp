@@ -17,6 +17,8 @@ export async function initAvatarView() {
     container.innerHTML = `<p style='color:red;'>Ошибка: Telegram ID не определён. Запустите из Telegram WebApp!</p>`;
     return;
   }
+  
+  console.log("📡 Отправляем запрос на /start_user с ID:", appState.telegramId);
 
   // ✅ Попытка зарегистрировать пользователя на сервере (если он не существует)
   try {
