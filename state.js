@@ -1,3 +1,6 @@
+console.log("🧠 initDataUnsafe:", window.Telegram?.WebApp?.initDataUnsafe);
+console.log("🧠 user:", window.Telegram?.WebApp?.initDataUnsafe?.user);
+console.log("🧠 telegramId:", window.Telegram?.WebApp?.initDataUnsafe?.user?.id);
 export const appState = {
   telegramId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id || null,
   firstName: (
