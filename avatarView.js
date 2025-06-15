@@ -5,6 +5,8 @@ import {
 } from "./helpers.js";
 import { showTaskModal } from "./tasksModal.js";
 
+console.log("Текущий Telegram ID:", appState.telegramId);
+
 export async function initAvatarView() {
   const container = document.getElementById("content");
   if (!container) {
