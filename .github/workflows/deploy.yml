@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "src/*"           # копирует ВСЁ из src/
+          source: "*"           # копирует ВСЁ из src/
           target: ${{ secrets.SERVER_PATH }} # например, /var/www/prizegift.space/
           rm: true                  # удаляет старые файлы (опционально)
 
