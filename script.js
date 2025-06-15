@@ -1,3 +1,4 @@
+import { appState } from './state.js';
 import { initAvatarView } from './avatarView.js';
 import { initAchievementsView } from './achievementsView.js';
 // import { initTasksView } from './tasksView.js';
@@ -12,7 +13,24 @@ const views = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // По умолчанию запускаем первую вкладку
+  // ====== ВАЖНО: инициализация Telegram ID ======
+  if (
+    window.Telegram &&
+    window.Telegram.WebApp &&
+    window.Telegram.WebApp.initDataUnsafe &&
+    window.Telegram.WebApp.initDataUnsafe.user
+  ) {
+    appState.telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
+    appState.firstName = window.Telegram.WebApp.initDataUnsafe.user.first_name || "";
+    appState.username = window.Telegram.WebApp.initDataUnsafe.user.username || "";
+    // Можно логировать для дебага:
+    console.log("[Pulse] Telegram ID:", appState.telegramId);
+  } else {
+    appState.telegramId = null;
+    console.warn("[Pulse] Не удалось определить Telegram ID. Проверьте запуск внутри Telegram WebApp.");
+  }
+
+  // По умолчанию запускаем первую вкладку (main)
   if (views.main) await views.main();
 
   // Переключатель вкладок
