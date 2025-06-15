@@ -1,11 +1,5 @@
 export const appState = {
-  telegramId: (
-    window.Telegram
-    && window.Telegram.WebApp
-    && window.Telegram.WebApp.initDataUnsafe
-    && window.Telegram.WebApp.initDataUnsafe.user
-    && window.Telegram.WebApp.initDataUnsafe.user.id
-  ) || null,
+  telegramId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id || null,
   firstName: (
     window.Telegram?.WebApp?.initDataUnsafe?.user?.first_name || ""
   ),
