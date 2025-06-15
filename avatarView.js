@@ -1,11 +1,6 @@
 import { appState } from "./state.js";
-import {
-  calculateXPProgress,
-  calculateXPMaxForLevel
-} from "./helpers.js";
+import { calculateXPProgress, calculateXPMaxForLevel } from "./helpers.js";
 import { showTaskModal } from "./tasksModal.js";
-
-console.log("Текущий Telegram ID:", appState.telegramId);
 
 export async function initAvatarView() {
   const container = document.getElementById("content");
@@ -15,6 +10,14 @@ export async function initAvatarView() {
   }
 
   container.innerHTML = `<p>Загрузка...</p>`;
+
+  // Дебаг: проверить, есть ли telegramId
+  console.log("Текущий Telegram ID:", appState.telegramId);
+
+  if (!appState.telegramId) {
+    container.innerHTML = `<p style='color:red;'>Ошибка: Telegram ID не определён. Запустите из Telegram WebApp!</p>`;
+    return;
+  }
 
   try {
     const res = await fetch(`https://prizegift.space/get_progress/${appState.telegramId}`);
