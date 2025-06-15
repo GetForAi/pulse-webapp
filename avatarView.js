@@ -11,30 +11,40 @@ export async function initAvatarView() {
 
   container.innerHTML = `<p>Загрузка...</p>`;
 
-  // Дебаг: проверить, есть ли telegramId
   console.log("Текущий Telegram ID:", appState.telegramId);
 
-  // Если ID не определён — не грузим данные с сервера
   if (!appState.telegramId) {
     container.innerHTML = `<p style='color:red;'>Ошибка: Telegram ID не определён. Запустите из Telegram WebApp!</p>`;
     return;
   }
 
-  // Проверяем корректность формируемого URL
+  // ✅ Попытка зарегистрировать пользователя на сервере (если он не существует)
+  try {
+    const registerRes = await fetch("https://prizegift.space/api/start_user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegram_id: appState.telegramId })
+    });
+    const registerData = await registerRes.json();
+    console.log("Ответ от start_user:", registerData);
+  } catch (regErr) {
+    console.error("Ошибка при регистрации пользователя:", regErr);
+    container.innerHTML = `<p style='color:red;'>Ошибка регистрации пользователя</p>`;
+    return;
+  }
+
   const fetchUrl = `https://prizegift.space/api/get_progress/${appState.telegramId}`;
   console.log("URL запроса к серверу:", fetchUrl);
 
   try {
     const res = await fetch(fetchUrl);
 
-    // Проверяем ответ сервера
     if (!res.ok) {
       console.error(`Ошибка ответа сервера (${res.status}): ${res.statusText}`);
       container.innerHTML = `<p style='color:red;'>Ошибка ответа сервера (${res.status})</p>`;
       return;
     }
 
-    // Парсим JSON — ловим ошибку парсинга!
     let data;
     try {
       data = await res.json();
@@ -44,7 +54,6 @@ export async function initAvatarView() {
       return;
     }
 
-    // Логируем, что получили
     console.log("Данные получены от сервера:", data);
 
     appState.steps = Array.isArray(data.steps) ? data.steps : [];
@@ -84,7 +93,6 @@ export async function initAvatarView() {
       </div>
     `;
 
-    // Функция для перерендера списка задач
     const renderAndBind = (taskArray) => {
       document.getElementById("task-list").innerHTML = renderTasks(taskArray);
       document.querySelectorAll(".task-item").forEach(item => {
@@ -97,7 +105,6 @@ export async function initAvatarView() {
       initAvatarView();
     }
 
-    // Навигация между вкладками "Активные" и "Завершённые"
     document.getElementById("tab-active").addEventListener("click", () => {
       document.getElementById("tab-active").classList.add("active");
       document.getElementById("tab-completed").classList.remove("active");
@@ -110,7 +117,6 @@ export async function initAvatarView() {
       renderAndBind(completedTasks);
     });
 
-    // Сразу отображаем активные задачи
     renderAndBind(activeTasks);
 
   } catch (err) {
