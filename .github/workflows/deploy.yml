@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -22,6 +22,9 @@ jobs:
 
       - name: Build Vite project
         run: npm run build
+
+      - name: Show dist contents
+        run: ls -la dist
 
       - name: Deploy dist/ to server
         uses: appleboy/scp-action@v0.1.7
@@ -37,7 +40,7 @@ jobs:
           overwrite: true
           verbose: true
 
-      - name: Reload nginx (опционально)
+      - name: Reload nginx
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
