@@ -19,14 +19,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: pulse-frontend
 
       - name: Build Vite project
         run: npm run build
-        working-directory: pulse-frontend
 
       - name: Show dist contents
-        run: ls -la pulse-frontend/dist
+        run: ls -la dist
 
       - name: Test SSH connection
         uses: appleboy/ssh-action@v1.0.3
@@ -45,7 +43,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "pulse-frontend/dist/*"
+          source: "dist/*"
           target: ${{ secrets.SERVER_PATH }}
           rm: true
           strip_components: 1
