@@ -1,18 +1,18 @@
 :root {
-  --bg: #0f111a;
-  --text: #e5e5e5;
-  --accent: #00ffe0;
-  --accent-dark: #00bfa5;
-  --tabbar-active: rgba(0, 255, 224, 0.1);
-  --xp: #ff70a6;
-  --level: #00ff9d;
-  --card-bg: rgba(255,255,255,0.05);
-  --border: rgba(255,255,255,0.1);
-  --shadow: 0 4px 12px rgba(0,255,224,0.15);
+  --bg: #f7f8fa;
+  --text: #222;
+  --accent: #4a90e2;
+  --accent-dark: #2c68b3;
+  --tabbar-active: rgba(74, 144, 226, 0.15);
+  --xp: #e67e22;
+  --level: #27ae60;
+  --card-bg: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 body {
-  font-family: 'Inter', 'Poppins', sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--bg);
@@ -25,32 +25,20 @@ body {
   width: 100%;
   max-width: 480px;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  margin: 0 auto;
   background-color: var(--bg);
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
 }
 
-#app.blurred {
-  filter: blur(5px);
-  pointer-events: none;
-  user-select: none;
-}
-
-#content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-/* Нижняя панель с иконками */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: #111;
+  background: #ffffff;
   padding: 10px 0;
   border-top: 1px solid var(--border);
   z-index: 10;
@@ -62,7 +50,7 @@ body {
   color: var(--text);
   font-size: 2rem;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s;
+  transition: color 0.2s;
 }
 
 .bottom-nav button.active {
@@ -73,93 +61,61 @@ body {
   color: var(--accent-dark);
 }
 
-nav {
-  display: none;
-}
-
-/* Глобальные модалки и контейнер */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease;
 }
 
-@keyframes fadeIn {
-  from { transform: translateY(10px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
-
-/* Стили для модального окна */
 .modal-box {
-  background: #181b24;
-  border-radius: 20px;
-  padding: 28px 24px;
-  min-width: 260px;
-  max-width: 92vw;
-  box-shadow: 0 0 32px 2px var(--accent);
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  position: relative;
-  animation: fadeIn 0.18s;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 90vw;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
+
 .modal-box h3 {
   color: var(--accent);
-  font-size: 1.5rem;
-  margin-bottom: 14px;
-  text-shadow: 0 0 8px var(--accent);
+  font-size: 1.4rem;
+  margin-bottom: 16px;
 }
+
 .modal-reward {
   color: var(--xp);
   font-size: 1.1rem;
-  margin-top: 12px;
+  margin-top: 10px;
   font-weight: bold;
-  text-shadow: 0 0 8px var(--xp);
 }
+
 .modal-close {
-  margin-top: 28px;
+  margin-top: 20px;
   background: var(--accent);
-  color: #222;
+  color: white;
   border: none;
-  border-radius: 10px;
-  padding: 10px 26px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 0 8px var(--accent);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.18s;
 }
+
 .modal-close:hover {
   background: var(--accent-dark);
 }
 
-/* 🔒 Блокировка масштабирования на мобильных */
-html, body {
-  touch-action: manipulation;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  overscroll-behavior: none;
-}
-
-body.blurred {
-  user-select: none;
-  pointer-events: none;
-}
-
-/* ====== AVATAR (главная вкладка) ====== */
 .avatar-container {
   background: var(--card-bg);
-  border-radius: 20px;
-  box-shadow: 0 0 30px var(--accent-dark);
-  padding: 30px 18px 24px 18px;
-  margin-bottom: 18px;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: var(--shadow);
 }
 
 .level-xp {
@@ -170,135 +126,104 @@ body.blurred {
 }
 
 .level {
-  font-weight: 800;
+  font-weight: 700;
   color: var(--level);
-  font-size: 1.3rem;
-  text-shadow: 0 0 8px var(--level);
+  font-size: 1.2rem;
 }
 
 .xp {
   font-weight: 600;
   color: var(--xp);
-  font-size: 1.1rem;
-  text-shadow: 0 0 8px var(--xp);
+  font-size: 1rem;
 }
 
 .progress-bar {
   width: 100%;
   height: 10px;
-  background: #252a3a;
+  background: #ddd;
   border-radius: 5px;
   overflow: hidden;
-  margin-bottom: 22px;
-  box-shadow: 0 0 10px var(--accent-dark);
+  margin: 10px 0 20px;
 }
+
 .progress-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--xp));
   border-radius: 5px;
-  box-shadow: 0 0 20px var(--accent), 0 0 40px var(--xp);
-  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  transition: width 0.4s ease;
 }
 
 .task-tabs {
   display: flex;
   justify-content: center;
-  gap: 18px;
-  margin-bottom: 18px;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 .task-tabs button {
-  padding: 10px 26px;
-  background: none;
-  border: none;
-  border-radius: 18px;
-  font-weight: 700;
-  font-size: 1.18rem;
-  color: var(--text);
-  background: rgba(0,255,224,0.08);
-  box-shadow: 0 0 10px var(--accent-dark);
-  transition: 0.2s;
+  padding: 8px 18px;
+  background: var(--tabbar-active);
+  border: 1px solid var(--accent-dark);
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--accent-dark);
   cursor: pointer;
+  transition: 0.2s;
 }
+
 .task-tabs button.active {
   background: var(--accent);
-  color: #101524;
-  text-shadow: 0 0 10px #00ffe0;
+  color: white;
 }
 
 .task-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
+  padding: 0 20px 80px;
 }
+
 .task-item {
   background: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 0 18px var(--accent-dark);
-  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
   cursor: pointer;
-  transition: background 0.15s, box-shadow 0.2s;
-  position: relative;
+  box-shadow: var(--shadow);
 }
-.task-item.done {
-  opacity: 0.55;
-  filter: grayscale(0.5);
-  background: #252a3a;
-  text-decoration: line-through;
-}
+
 .task-title {
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 500;
   color: var(--text);
 }
 
-/* ====== ДОСТИЖЕНИЯ (GRID) ====== */
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px 22px;
-  justify-items: center;
-  padding: 20px 0;
+  gap: 20px;
+  padding: 20px;
 }
+
 .achievement-tile {
-  width: 110px;
-  height: 110px;
-  background: var(--card-bg);
-  border-radius: 18px;
-  box-shadow: 0 4px 24px var(--accent-dark);
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: box-shadow 0.18s, border-color 0.18s, opacity 0.18s;
-  border: 2.5px solid transparent;
-  position: relative;
 }
+
 .achievement-tile.completed {
+  opacity: 0.5;
   border-color: var(--level);
-  opacity: 0.62;
 }
+
 .achievement-tile img {
-  width: 56px;
-  height: 56px;
-  margin-bottom: 7px;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 0 16px var(--accent);
-  background: #181b24;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 6px;
 }
-.achievement-tile .title {
-  color: var(--accent);
-  font-weight: 700;
-  text-align: center;
-  font-size: 1.04rem;
-  text-shadow: 0 0 5px var(--accent-dark);
-}
-
-/* Плавная прокрутка достижений */
-.achievements-grid {
-  scroll-behavior: smooth;
-}
-
-/* ===== END ===== */
