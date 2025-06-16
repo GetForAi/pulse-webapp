@@ -33,6 +33,9 @@ jobs:
           source: "dist/*"
           target: ${{ secrets.SERVER_PATH }}
           rm: true
+          strip_components: 1
+          overwrite: true
+          verbose: true
 
       - name: Reload nginx (опционально)
         uses: appleboy/ssh-action@v1.0.3
