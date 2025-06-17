@@ -1,6 +1,40 @@
 import { appState } from './state.js';
 
-// Проверка подписки пользователя на канал
+export async function getProfileData() {
+  const res = await fetch("https://prizegift.space/api/get_profile", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ telegram_id: appState.telegramId }),
+  });
+
+  if (!res.ok) {
+    console.error("❌ Ошибка загрузки профиля:", res.status);
+    return {};
+  }
+
+  return await res.json();
+}
+
+export async function saveProfileData(profileData) {
+  const res = await fetch("https://prizegift.space/api/save_profile", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      telegram_id: appState.telegramId,
+      ...profileData
+    }),
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("❌ Ошибка сохранения:", res.status, errorText);
+    return false;
+  }
+
+  return await res.json();
+}
+
+// Остальные функции (без изменений):
 export async function checkSubscription(channelUsername) {
   const res = await fetch("https://prizegift.space/api/check_subscription", {
     method: "POST",
@@ -14,7 +48,6 @@ export async function checkSubscription(channelUsername) {
   return await res.json();
 }
 
-// Обновление шага (задания)
 export async function updateStep(step_number) {
   const res = await fetch("https://prizegift.space/api/update_step", {
     method: "POST",
@@ -28,7 +61,6 @@ export async function updateStep(step_number) {
   return await res.json();
 }
 
-// Анализ калорийности через backend (обходит CORS)
 export async function analyzeCalories(inputText) {
   const res = await fetch("https://prizegift.space/api/analyze_calories", {
     method: "POST",
@@ -40,5 +72,5 @@ export async function analyzeCalories(inputText) {
     console.error("Calorie analyze error:", text);
     throw new Error(`Ошибка запроса к backend: ${res.status}`);
   }
-  return await res.json(); // ожидаем { items: [...] }
+  return await res.json();
 }
