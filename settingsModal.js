@@ -10,8 +10,6 @@ export async function showProfileModal() {
     gender = 'Мужской'
   } = userData;
 
-  const disablePersonalFields = Boolean(birthdate && gender && nickname); // Заблокировать поля, которые вводятся один раз
-
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
   modal.innerHTML = `
@@ -19,10 +17,10 @@ export async function showProfileModal() {
       <h3>Профиль</h3>
 
       <label>Никнейм</label>
-      <input type="text" id="profile-nickname" ${nickname ? "disabled" : ""} value="${nickname}" placeholder="Ваш никнейм" />
+      <input type="text" id="profile-nickname" value="${nickname}" ${nickname ? "disabled" : ""} placeholder="Ваш никнейм" />
 
       <label>Дата рождения</label>
-      <input type="date" id="profile-birthdate" value="${birthdate}" min="1900-01-01" max="2024-12-31" ${birthdate ? "disabled" : ""} />
+      <input type="date" id="profile-birthdate" value="${birthdate}" min="1940-01-01" max="2020-12-31" ${birthdate ? "disabled" : ""} />
 
       <label>Вес (кг)</label>
       <select id="profile-weight">${generateOptions(30, 150, weight)}</select>
@@ -51,26 +49,26 @@ export async function showProfileModal() {
   };
 
   modal.querySelector(".modal-save-profile").onclick = async () => {
-    const data = {
-      nickname: document.getElementById("profile-nickname").value.trim(),
-      birthdate: document.getElementById("profile-birthdate").value,
-      weight: +document.getElementById("profile-weight").value,
-      height: +document.getElementById("profile-height").value,
-      gender: document.getElementById("profile-gender").value
-    };
+    const nickname = document.getElementById("profile-nickname").value.trim();
+    const birthdate = document.getElementById("profile-birthdate").value;
+    const weight = +document.getElementById("profile-weight").value;
+    const height = +document.getElementById("profile-height").value;
+    const gender = document.getElementById("profile-gender").value;
 
-    if (!data.birthdate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      alert("Дата рождения должна быть в формате ГГГГ-ММ-ДД");
-      return;
+    // Проверка даты
+    if (birthdate) {
+      if (!birthdate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        alert("Дата рождения должна быть в формате ГГГГ-ММ-ДД");
+        return;
+      }
+      const year = parseInt(birthdate.slice(0, 4));
+      if (year < 1940 || year > 2020) {
+        alert("Допустимый диапазон годов: 1940–2020");
+        return;
+      }
     }
 
-    const year = parseInt(data.birthdate.slice(0, 4));
-    if (year < 1940 || year > 2020) {
-      alert("Допустимый диапазон годов: 1940–2020");
-      return;
-    }
-
-    await saveProfileData(data);
+    await saveProfileData({ nickname, birthdate, weight, height, gender });
 
     modal.remove();
     document.getElementById("app").classList.remove("blurred");
