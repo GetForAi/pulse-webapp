@@ -1,7 +1,7 @@
 import { appState } from './state.js';
 import { showModal } from './modal.js';
+import { checkSubscription, updateStep } from './api.js';
 
-// Основная модалка для задания (шагов)
 export function showTaskModal(task, reloadCallback) {
   const { title, description, xp, coins, task_meta, step_number, type, completed } = task;
 
@@ -34,7 +34,6 @@ export function showTaskModal(task, reloadCallback) {
     document.getElementById("app").classList.remove("blurred");
   };
 
-  // Проверка подписки через backend
   const checkBtn = document.getElementById("check-subscribe");
   if (checkBtn) {
     checkBtn.onclick = async () => {
@@ -42,27 +41,10 @@ export function showTaskModal(task, reloadCallback) {
       checkBtn.textContent = "Проверка...";
 
       try {
-        const res = await fetch("https://prizegift.space/api/check_subscription", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            telegram_id: appState.telegramId,
-            channel: channelUsername
-          }),
-        });
+        const data = await checkSubscription(channelUsername);
 
-        const data = await res.json();
         if (data.subscribed) {
-          const updateRes = await fetch("https://prizegift.space/api/update_step", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              telegram_id: appState.telegramId,
-              step_number
-            }),
-          });
-
-          const updated = await updateRes.json();
+          const updated = await updateStep(step_number);
           const { xp: newXP, coins: newCoins, level: newLevel } = updated;
 
           showModal({
@@ -89,7 +71,6 @@ export function showTaskModal(task, reloadCallback) {
         }
 
       } catch (err) {
-        console.error(err);
         showModal({
           title: "Ошибка проверки",
           message: "Не удалось проверить подписку. Попробуйте позже.",
@@ -101,4 +82,3 @@ export function showTaskModal(task, reloadCallback) {
     };
   }
 }
-
