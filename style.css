@@ -64,11 +64,9 @@ body {
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s;
 }
-
 .bottom-nav button.active {
   color: var(--accent);
 }
-
 .bottom-nav button:hover {
   color: var(--accent-dark);
 }
@@ -85,12 +83,10 @@ body {
   z-index: 1000;
   animation: fadeIn 0.2s ease;
 }
-
 @keyframes fadeIn {
   from { transform: translateY(10px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
-
 .modal-box {
   background: #181b24;
   border-radius: 20px;
@@ -103,27 +99,16 @@ body {
   text-align: center;
   animation: fadeIn 0.18s;
 }
-
 .modal-box.wide {
   max-width: 400px;
   text-align: left;
 }
-
 .modal-box h3 {
   color: var(--accent);
   font-size: 1.5rem;
   margin-bottom: 14px;
   text-shadow: 0 0 8px var(--accent);
 }
-
-.modal-reward {
-  color: var(--xp);
-  font-size: 1.1rem;
-  margin-top: 12px;
-  font-weight: bold;
-  text-shadow: 0 0 8px var(--xp);
-}
-
 .modal-close,
 .modal-save-profile {
   margin-top: 20px;
@@ -138,13 +123,12 @@ body {
   cursor: pointer;
   transition: background 0.18s;
 }
-
 .modal-close:hover,
 .modal-save-profile:hover {
   background: var(--accent-dark);
 }
 
-/* Профиль: модалка */
+/* Profile modal styles */
 .modal-box label {
   display: block;
   margin-top: 12px;
@@ -152,8 +136,9 @@ body {
   font-weight: 600;
   color: var(--accent);
 }
-
-.modal-box select {
+.modal-box select,
+.modal-box input[type="text"],
+.modal-box input[type="date"] {
   width: 100%;
   padding: 10px;
   font-size: 1rem;
@@ -164,15 +149,6 @@ body {
   margin-bottom: 12px;
 }
 
-/* Блокировка масштабирования */
-html, body {
-  touch-action: manipulation;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  overscroll-behavior: none;
-}
-
 /* AVATAR */
 .avatar-container {
   background: var(--card-bg);
@@ -181,28 +157,24 @@ html, body {
   padding: 30px 18px 24px 18px;
   margin-bottom: 18px;
 }
-
 .level-xp {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
-
 .level {
   font-weight: 800;
   color: var(--level);
   font-size: 1.3rem;
   text-shadow: 0 0 8px var(--level);
 }
-
 .xp {
   font-weight: 600;
   color: var(--xp);
   font-size: 1.1rem;
   text-shadow: 0 0 8px var(--xp);
 }
-
 .progress-bar {
   width: 100%;
   height: 10px;
@@ -212,7 +184,6 @@ html, body {
   margin-bottom: 22px;
   box-shadow: 0 0 10px var(--accent-dark);
 }
-
 .progress-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--xp));
@@ -246,7 +217,6 @@ html, body {
   color: #101524;
   text-shadow: 0 0 10px #00ffe0;
 }
-
 .task-list {
   display: flex;
   flex-direction: column;
@@ -315,4 +285,13 @@ html, body {
   text-align: center;
   font-size: 1.04rem;
   text-shadow: 0 0 5px var(--accent-dark);
+}
+
+/* Блокировка масштабирования */
+html, body {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
 }
