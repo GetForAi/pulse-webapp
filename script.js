@@ -1,3 +1,4 @@
+// проверка
 import { appState } from './state.js';
 import { initAvatarView } from './avatarView.js';
 import { initAchievementsView } from './achievementsView.js';
