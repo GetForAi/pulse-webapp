@@ -1,4 +1,3 @@
-// settingsModal.js
 export function showProfileModal(userData = {}) {
   const { age = 25, weight = 70, height = 170, gender = "Мужской" } = userData;
 
@@ -48,7 +47,7 @@ export function showProfileModal(userData = {}) {
       gender: document.getElementById("profile-gender").value,
     };
     console.log("✅ Данные профиля:", profileData);
-    // 👉 в будущем: отправка в backend
+    // 👉 в будущем: отправка на backend
 
     modal.remove();
     document.getElementById("app").classList.remove("blurred");
