@@ -12,8 +12,9 @@ export async function initTasksView() {
     const data = await res.json();
     appState.steps = Array.isArray(data.steps) ? data.steps : [];
 
-    const activeTasks = appState.steps.filter(s => !s.completed);
-    const completedTasks = appState.steps.filter(s => s.completed);
+    const activeDaily = appState.steps.filter(t => !t.completed && t.type === "calories");
+    const activeOneTime = appState.steps.filter(t => !t.completed && t.type === "subscribe");
+    const completed = appState.steps.filter(t => t.completed);
 
     const renderTasks = (list, done = false) =>
       list.map(task => `
@@ -29,13 +30,15 @@ export async function initTasksView() {
           <button id="tab-completed">Завершённые</button>
         </div>
         <div class="task-list" id="task-list">
-          ${renderTasks(activeTasks)}
+          <h3>📅 Ежедневные</h3>
+          ${renderTasks(activeDaily)}
+          <h3>📌 Одноразовые</h3>
+          ${renderTasks(activeOneTime)}
         </div>
       </div>
     `;
 
-    const renderAndBind = (taskArray) => {
-      document.getElementById("task-list").innerHTML = renderTasks(taskArray);
+    const bindTaskClicks = () => {
       document.querySelectorAll(".task-item").forEach(item => {
         const task = JSON.parse(item.dataset.task);
         item.addEventListener("click", () => showTaskModal(task, initTasksView));
@@ -45,19 +48,26 @@ export async function initTasksView() {
     document.getElementById("tab-active").addEventListener("click", () => {
       document.getElementById("tab-active").classList.add("active");
       document.getElementById("tab-completed").classList.remove("active");
-      renderAndBind(activeTasks);
+      document.getElementById("task-list").innerHTML = `
+        <h3>📅 Ежедневные</h3>
+        ${renderTasks(activeDaily)}
+        <h3>📌 Одноразовые</h3>
+        ${renderTasks(activeOneTime)}
+      `;
+      bindTaskClicks();
     });
 
     document.getElementById("tab-completed").addEventListener("click", () => {
       document.getElementById("tab-completed").classList.add("active");
       document.getElementById("tab-active").classList.remove("active");
-      renderAndBind(completedTasks);
+      document.getElementById("task-list").innerHTML = renderTasks(completed, true);
+      bindTaskClicks();
     });
 
-    renderAndBind(activeTasks);
+    bindTaskClicks();
+
   } catch (err) {
     container.innerHTML = `<p style='color:red;'>Ошибка загрузки заданий</p>`;
     console.error("Ошибка tasksView:", err);
   }
 }
-
