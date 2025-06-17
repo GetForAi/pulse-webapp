@@ -1,4 +1,3 @@
-// проверка
 import { showProfileModal } from './settingsModal.js';
 import { getProfileData } from './api.js';
 
