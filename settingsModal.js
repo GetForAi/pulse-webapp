@@ -1,17 +1,16 @@
-import { saveProfileData } from './api.js';
+import { saveProfileData, getProfileData } from './api.js';
 
-export function showProfileModal(userData = {}) {
+export async function showProfileModal() {
+  const userData = await getProfileData();
   const {
     nickname = '',
     birthdate = '',
-    age = 25,
     weight = 70,
     height = 170,
     gender = 'Мужской'
   } = userData;
 
-  const existing = document.querySelector(".modal-overlay");
-  if (existing) existing.remove();
+  const isLocked = birthdate && gender; // уже введены — блокируем поля
 
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
@@ -20,22 +19,19 @@ export function showProfileModal(userData = {}) {
       <h3>Профиль</h3>
 
       <label>Никнейм</label>
-      <input type="text" id="profile-nickname" placeholder="Ваш никнейм" value="${nickname}">
+      <input type="text" id="profile-nickname" ${nickname ? "disabled" : ""} value="${nickname}" placeholder="Ваш никнейм">
 
       <label>Дата рождения</label>
-      <input type="date" id="profile-birthdate" value="${birthdate}">
-
-      <label>Возраст</label>
-      <select id="profile-age">${generateOptions(10, 100, age)}</select>
+      <input type="date" id="profile-birthdate" ${birthdate ? "disabled" : ""} value="${birthdate}" min="1900-01-01" max="2024-12-31">
 
       <label>Вес (кг)</label>
       <select id="profile-weight">${generateOptions(30, 150, weight)}</select>
 
       <label>Рост (см)</label>
-      <select id="profile-height">${generateOptions(140, 220, height)}</select>
+      <select id="profile-height" ${height ? "disabled" : ""}>${generateOptions(140, 220, height)}</select>
 
       <label>Пол</label>
-      <select id="profile-gender">
+      <select id="profile-gender" ${gender ? "disabled" : ""}>
         <option ${gender === "Мужской" ? "selected" : ""}>Мужской</option>
         <option ${gender === "Женский" ? "selected" : ""}>Женский</option>
         <option ${gender === "Другое" ? "selected" : ""}>Другое</option>
@@ -55,17 +51,26 @@ export function showProfileModal(userData = {}) {
   };
 
   modal.querySelector(".modal-save-profile").onclick = async () => {
-    const nickname = document.getElementById("profile-nickname").value.trim();
-    const birthdate = document.getElementById("profile-birthdate").value;
-    const age = +document.getElementById("profile-age").value;
-    const weight = +document.getElementById("profile-weight").value;
-    const height = +document.getElementById("profile-height").value;
-    const gender = document.getElementById("profile-gender").value;
+    const data = {
+      nickname: document.getElementById("profile-nickname").value.trim(),
+      birthdate: document.getElementById("profile-birthdate").value,
+      weight: +document.getElementById("profile-weight").value,
+      height: +document.getElementById("profile-height").value,
+      gender: document.getElementById("profile-gender").value,
+    };
 
-    const profileData = { nickname, birthdate, age, weight, height, gender };
-    console.log("✅ Сохраняем данные профиля:", profileData);
+    if (!data.weight || data.weight < 30 || data.weight > 150) {
+      alert("Введите корректный вес");
+      return;
+    }
 
-    await saveProfileData(profileData);
+    if (!birthdate && (!data.birthdate || !/^\d{4}-\d{2}-\d{2}$/.test(data.birthdate))) {
+      alert("Введите корректную дату рождения");
+      return;
+    }
+
+    const result = await saveProfileData(data);
+    console.log("✅ Сохранено:", result);
 
     modal.remove();
     document.getElementById("app").classList.remove("blurred");
