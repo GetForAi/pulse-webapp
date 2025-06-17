@@ -1,3 +1,4 @@
+// проверка
 export function showModal({ title, message, icon = "" }) {
   const existing = document.querySelector(".modal-overlay");
   if (existing) existing.remove();
