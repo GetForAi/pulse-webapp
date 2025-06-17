@@ -2,14 +2,14 @@ import { appState } from './state.js';
 import { initAvatarView } from './avatarView.js';
 import { initAchievementsView } from './achievementsView.js';
 import { initTasksView } from './tasksView.js';
-// import { initSettingsView } from './settingsView.js';
+import { initSettingsView } from './settingsView.js';
 
 // Карта вкладок
 const views = {
   main: initAvatarView,
   achievements: initAchievementsView,
   tasks: initTasksView,
-  // settings: initSettingsView,
+  settings: initSettingsView,
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
