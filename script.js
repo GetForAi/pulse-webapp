@@ -1,14 +1,14 @@
 import { appState } from './state.js';
 import { initAvatarView } from './avatarView.js';
 import { initAchievementsView } from './achievementsView.js';
-// import { initTasksView } from './tasksView.js';
+import { initTasksView } from './tasksView.js';
 // import { initSettingsView } from './settingsView.js';
 
 // Карта вкладок
 const views = {
   main: initAvatarView,
   achievements: initAchievementsView,
-  // tasks: initTasksView,
+  tasks: initTasksView,
   // settings: initSettingsView,
 };
 
