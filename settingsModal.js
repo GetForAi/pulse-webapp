@@ -1,7 +1,15 @@
-export function showProfileModal(userData = {}) {
-  const { age = 25, weight = 70, height = 170, gender = "Мужской" } = userData;
+import { saveProfileData } from './api.js';
 
-  // Удаляем старую модалку, если она осталась
+export function showProfileModal(userData = {}) {
+  const {
+    nickname = '',
+    birthdate = '',
+    age = 25,
+    weight = 70,
+    height = 170,
+    gender = 'Мужской'
+  } = userData;
+
   const existing = document.querySelector(".modal-overlay");
   if (existing) existing.remove();
 
@@ -11,8 +19,14 @@ export function showProfileModal(userData = {}) {
     <div class="modal-box wide">
       <h3>Профиль</h3>
 
+      <label>Никнейм</label>
+      <input type="text" id="profile-nickname" placeholder="Ваш никнейм" value="${nickname}">
+
+      <label>Дата рождения</label>
+      <input type="date" id="profile-birthdate" value="${birthdate}">
+
       <label>Возраст</label>
-      <select id="profile-age">${generateOptions(18, 100, age)}</select>
+      <select id="profile-age">${generateOptions(10, 100, age)}</select>
 
       <label>Вес (кг)</label>
       <select id="profile-weight">${generateOptions(30, 150, weight)}</select>
@@ -31,6 +45,7 @@ export function showProfileModal(userData = {}) {
       <button class="modal-close">Закрыть</button>
     </div>
   `;
+
   document.body.appendChild(modal);
   document.getElementById("app").classList.add("blurred");
 
@@ -39,15 +54,18 @@ export function showProfileModal(userData = {}) {
     document.getElementById("app").classList.remove("blurred");
   };
 
-  modal.querySelector(".modal-save-profile").onclick = () => {
-    const profileData = {
-      age: +document.getElementById("profile-age").value,
-      weight: +document.getElementById("profile-weight").value,
-      height: +document.getElementById("profile-height").value,
-      gender: document.getElementById("profile-gender").value,
-    };
-    console.log("✅ Данные профиля:", profileData);
-    // 👉 в будущем: отправка на backend
+  modal.querySelector(".modal-save-profile").onclick = async () => {
+    const nickname = document.getElementById("profile-nickname").value.trim();
+    const birthdate = document.getElementById("profile-birthdate").value;
+    const age = +document.getElementById("profile-age").value;
+    const weight = +document.getElementById("profile-weight").value;
+    const height = +document.getElementById("profile-height").value;
+    const gender = document.getElementById("profile-gender").value;
+
+    const profileData = { nickname, birthdate, age, weight, height, gender };
+    console.log("✅ Сохраняем данные профиля:", profileData);
+
+    await saveProfileData(profileData);
 
     modal.remove();
     document.getElementById("app").classList.remove("blurred");
@@ -59,4 +77,6 @@ function generateOptions(from, to, selected) {
     const val = from + i;
     return `<option value="${val}" ${val === selected ? "selected" : ""}>${val}</option>`;
   }).join("");
+}
+
 }
