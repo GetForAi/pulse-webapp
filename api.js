@@ -1,6 +1,7 @@
-// проверка
+// api.js
 import { appState } from './state.js';
 
+// 🔄 Загрузка данных профиля
 export async function getProfileData() {
   const res = await fetch("https://prizegift.space/api/get_profile", {
     method: "POST",
@@ -16,6 +17,7 @@ export async function getProfileData() {
   return await res.json();
 }
 
+// 💾 Сохранение данных профиля
 export async function saveProfileData(profileData) {
   const res = await fetch("https://prizegift.space/api/save_profile", {
     method: "POST",
@@ -35,7 +37,7 @@ export async function saveProfileData(profileData) {
   return await res.json();
 }
 
-// Остальные функции (без изменений):
+// ✅ Проверка подписки на канал
 export async function checkSubscription(channelUsername) {
   const res = await fetch("https://prizegift.space/api/check_subscription", {
     method: "POST",
@@ -45,10 +47,12 @@ export async function checkSubscription(channelUsername) {
       channel: channelUsername
     }),
   });
+
   if (!res.ok) throw new Error(`Ошибка запроса: ${res.status}`);
   return await res.json();
 }
 
+// 📌 Обновление шага (задания)
 export async function updateStep(step_number) {
   const res = await fetch("https://prizegift.space/api/update_step", {
     method: "POST",
@@ -58,20 +62,24 @@ export async function updateStep(step_number) {
       step_number
     }),
   });
+
   if (!res.ok) throw new Error(`Ошибка запроса: ${res.status}`);
   return await res.json();
 }
 
+// 🔍 Анализ калорийности
 export async function analyzeCalories(inputText) {
   const res = await fetch("https://prizegift.space/api/analyze_calories", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query: inputText })
   });
+
   if (!res.ok) {
     const text = await res.text();
     console.error("Calorie analyze error:", text);
     throw new Error(`Ошибка запроса к backend: ${res.status}`);
   }
+
   return await res.json();
 }
