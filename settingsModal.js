@@ -78,5 +78,3 @@ function generateOptions(from, to, selected) {
     return `<option value="${val}" ${val === selected ? "selected" : ""}>${val}</option>`;
   }).join("");
 }
-
-}
