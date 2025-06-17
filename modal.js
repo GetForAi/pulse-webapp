@@ -1,7 +1,6 @@
-// Универсальная модалка (ошибки, уведомления и т.д.)
 export function showModal({ title, message, icon = "" }) {
   const existing = document.querySelector(".modal-overlay");
-  if (existing) existing.remove(); // Убираем старую модалку, если она есть
+  if (existing) existing.remove();
 
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
