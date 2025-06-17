@@ -1,3 +1,4 @@
+// проверка
 import { appState } from './state.js';
 
 export async function getProfileData() {
