@@ -1,39 +1,49 @@
 import { appState } from './state.js';
 
-// 🔄 Загрузка данных профиля
+// 🔄 Получение данных профиля
 export async function getProfileData() {
-  const res = await fetch("https://prizegift.space/api/get_profile", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ telegram_id: appState.telegramId }),
-  });
+  try {
+    const res = await fetch("https://prizegift.space/api/get_profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telegram_id: appState.telegramId }),
+    });
 
-  if (!res.ok) {
-    console.error("❌ Ошибка загрузки профиля:", res.status);
+    if (!res.ok) {
+      console.error("❌ Ошибка загрузки профиля:", res.status);
+      return {};
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("❌ Ошибка сети при загрузке профиля:", err);
     return {};
   }
-
-  return await res.json();
 }
 
-// 💾 Сохранение данных профиля
+// 💾 Сохранение данных профиля (дата рождения, пол, рост, вес)
 export async function saveProfileData(profileData) {
-  const res = await fetch("https://prizegift.space/api/save_profile", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      telegram_id: appState.telegramId,
-      ...profileData
-    }),
-  });
+  try {
+    const res = await fetch("https://prizegift.space/api/save_profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        telegram_id: appState.telegramId,
+        ...profileData
+      }),
+    });
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error("❌ Ошибка сохранения:", res.status, errorText);
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("❌ Ошибка сохранения:", res.status, errorText);
+      return false;
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("❌ Сетевая ошибка при сохранении профиля:", err);
     return false;
   }
-
-  return await res.json();
 }
 
 // ✅ Проверка подписки
